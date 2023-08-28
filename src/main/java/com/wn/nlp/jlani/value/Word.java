@@ -1,5 +1,7 @@
 package com.wn.nlp.jlani.value;
 
+import java.util.Objects;
+
 /**
  * A word of a sentence.
  *
@@ -8,4 +10,7 @@ package com.wn.nlp.jlani.value;
 public record Word(
 		String value
 ) {
+	public Word {
+		Objects.requireNonNull(value);
+	}
 }

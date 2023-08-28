@@ -43,13 +43,16 @@ public class Response {
 	/**
 	 * The result of a language identification for a specific language.
 	 */
-	public class Result implements Comparable<Result> {
+	public static class Result implements Comparable<Result> {
 		private final double score;
 		private final List<Word> words;
+		private final double coverage;
 		
-		public Result(final double score, final List<Word> words) {
+		public Result(final double score, final List<Word> words, final int checkedWords) {
+			if (checkedWords < 1) throw new IllegalArgumentException("No words checked");
 			this.score = score;
 			this.words = Objects.requireNonNull(words);
+			coverage = (double) words.size() / checkedWords;
 		}
 		
 		@Override
@@ -62,7 +65,7 @@ public class Response {
 			return "Result{" +
 				   "score=" + score +
 				   ", words=" + words +
-				   ", coverage=" + getCoverage() +
+				   ", coverage=" + coverage +
 				   '}';
 		}
 		
@@ -84,7 +87,7 @@ public class Response {
 		 * The percentage of checked words the language likely covers.
 		 */
 		public double getCoverage() {
-			return (double) words.size() / checkedWords;
+			return coverage;
 		}
 	}
 }
