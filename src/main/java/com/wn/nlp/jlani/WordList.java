@@ -16,6 +16,13 @@ public abstract class WordList {
 	}
 	
 	/**
+	 * Returns true, if the wordlist contains the given word.
+	 *
+	 * @param word the word
+	 */
+	public abstract boolean containsWord(Word word);
+	
+	/**
 	 * The likelihood of the given word.
 	 *
 	 * @param word the word

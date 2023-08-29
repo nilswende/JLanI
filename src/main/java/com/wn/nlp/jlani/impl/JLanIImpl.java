@@ -1,9 +1,6 @@
 package com.wn.nlp.jlani.impl;
 
-import com.wn.nlp.jlani.JLanI;
-import com.wn.nlp.jlani.Request;
-import com.wn.nlp.jlani.Response;
-import com.wn.nlp.jlani.WordLists;
+import com.wn.nlp.jlani.*;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 
@@ -44,19 +41,23 @@ public class JLanIImpl implements JLanI {
 		var evaluatedWordLists = wordLists.getEvaluatedWordLists(request.getLanguages());
 		var evaluation = new Evaluation(evaluatedWordLists);
 		var sentence = preprocessSentence(request);
-		var scores = new HashMap<Language, Double>();
-		evaluatedWordLists.keySet().forEach(l -> scores.put(l, 1.0));
-		var words = new HashMap<Language, List<Word>>();
-		evaluatedWordLists.keySet().forEach(l -> words.put(l, new ArrayList<>()));
+		
+		var results = new HashMap<Language, Response.Result>();
+		evaluatedWordLists.keySet().forEach(l -> results.put(l, new Response.Result(sentence.size())));
+		
 		for (final var word : sentence) {
 			var evaluated = evaluation.evaluate(word);
-			scores.replaceAll((l, d) -> d * evaluated.get(l));
-			evaluatedWordLists.entrySet().stream()
-					.filter(e -> e.getValue().getLikelihood(word) != null)
-					.forEach(e -> words.get(e.getKey()).add(word));
+			for (final var entry : evaluated.entrySet()) {
+				var language = entry.getKey();
+				var result = results.get(language);
+				result.addScore(entry.getValue());
+				if (evaluatedWordLists.get(language).containsWord(word)) {
+					result.addWord(word);
+				}
+				
+			}
 		}
-		var results = new HashMap<Language, Response.Result>();
-		evaluatedWordLists.keySet().forEach(l -> results.put(l, new Response.Result(scores.get(l), words.get(l), sentence.size())));
+		
 		return new Response(results, sentence.size());
 	}
 	

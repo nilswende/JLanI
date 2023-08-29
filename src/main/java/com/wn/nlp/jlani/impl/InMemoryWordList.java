@@ -67,6 +67,11 @@ public class InMemoryWordList extends WordList {
 	}
 	
 	@Override
+	public boolean containsWord(final Word word) {
+		return wordlist.containsKey(word);
+	}
+	
+	@Override
 	public Double getLikelihood(final Word word) {
 		return wordlist.get(word);
 	}
