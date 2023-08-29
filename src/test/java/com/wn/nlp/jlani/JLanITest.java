@@ -4,12 +4,14 @@ import com.wn.nlp.jlani.impl.InMemoryWordList;
 import com.wn.nlp.jlani.impl.JLanIImpl;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,5 +71,12 @@ class JLanITest {
 		var result = response.createResult(language);
 		result.addScore(score);
 		words.forEach(w -> result.addWord(new Word(w)));
+	}
+	
+	@Test
+	void testLimited() {
+		var request = new Request("JLanI identifies the most likely language of an unknown text", Set.of(), 8);
+		var actual = evaluate(request);
+		assertEquals("en", actual.getMostLikelyResult().getKey().name());
 	}
 }

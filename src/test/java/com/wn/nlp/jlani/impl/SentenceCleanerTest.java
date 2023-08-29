@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class SentenceCleanerTest {
@@ -25,5 +25,12 @@ class SentenceCleanerTest {
 				arguments("abc?abc", "abcabc"),
 				arguments("abcßabc", "abcßabc")
 		);
+	}
+	
+	@Test
+	void testEmpty() {
+		var string = "in, put";
+		final var actual = RegexSentenceCleaner.ofRegex("").apply(string);
+		assertEquals(string, actual);
 	}
 }

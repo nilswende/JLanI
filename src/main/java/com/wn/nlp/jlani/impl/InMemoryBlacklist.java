@@ -7,12 +7,16 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Flags words as unwanted using an in-memory blacklist.
  */
 public class InMemoryBlacklist implements Blacklist {
+	static final String PROPERTY = "BlacklistFile";
 	private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryBlacklist.class);
 	private final Set<Word> blacklist;
 	
@@ -27,16 +31,16 @@ public class InMemoryBlacklist implements Blacklist {
 	 */
 	public static Blacklist ofProperty(final Properties properties) {
 		Objects.requireNonNull(properties);
-		var property = "BlacklistFile";
-		var pathString = properties.getProperty(property);
+		var pathString = properties.getProperty(PROPERTY);
 		if (pathString == null) {
 			return new NullBlacklist();
 		} else if (pathString.isBlank()) {
-			LOGGER.info("Ignored empty '{}' declaration", property);
+			LOGGER.info("Ignored empty '{}' declaration", PROPERTY);
+			return new NullBlacklist();
 		}
 		var path = Path.of(pathString);
 		if (Files.notExists(path)) {
-			LOGGER.warn("Ignored missing '{}': {}", property, path.toAbsolutePath());
+			LOGGER.warn("Ignored missing '{}': {}", PROPERTY, path.toAbsolutePath());
 			return new NullBlacklist();
 		}
 		try (var reader = new InputStreamReader(Files.newInputStream(path))) {

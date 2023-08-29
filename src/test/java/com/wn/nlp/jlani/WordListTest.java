@@ -16,6 +16,11 @@ class WordListTest {
 	}
 	
 	@Test
+	void testEquals() {
+		assertEquals(new MockWordList("de"), new MockWordList("de"));
+	}
+	
+	@Test
 	void testString() {
 		String wordlistStr = """
 				3f0601068209354a Rat
@@ -29,6 +34,24 @@ class WordListTest {
 	}
 	
 	@Test
+	void testIllegalReaderFormat() {
+		String wordlistStr = """
+				3f0601068209354a
+				3efc28803f258cb7
+				3efe194a134042e1
+				""";
+		assertThrows(IllegalArgumentException.class, () -> getWordList(wordlistStr));
+	}
+	
+	@Test
+	void testIllegalNumber() {
+		String wordlistStr = """
+				-2 Rat
+				""";
+		assertThrows(IllegalArgumentException.class, () -> InMemoryWordList.ofWordCountFileReader(new StringReader(wordlistStr), new Language("de")));
+	}
+	
+	@Test
 	void testSerializedFile() {
 		var path = Path.of("./resources/wordlists/de.txt");
 		var wordList = InMemoryWordList.ofSerializedFile(path);
@@ -38,11 +61,39 @@ class WordListTest {
 	}
 	
 	@Test
+	void testMissingSerializedFile() {
+		var path = Path.of("./resources/wordlists/missing.txt");
+		assertThrows(IllegalArgumentException.class, () -> InMemoryWordList.ofSerializedFile(path));
+	}
+	
+	@Test
 	void testWordCountFile() {
 		var path = Path.of("./src/test/resources/en.txt");
 		var wordList = InMemoryWordList.ofWordCountFile(path);
 		assertEquals(wordList.getLanguage(), new Language("en"));
 		assertEquals(0.5, wordList.getLikelihood(new Word("prepare")));
 		assertNull(wordList.getLikelihood(new Word("full")));
+	}
+	
+	@Test
+	void testMissingWordCountFile() {
+		var path = Path.of("./resources/wordlists/missing.txt");
+		assertThrows(IllegalArgumentException.class, () -> InMemoryWordList.ofWordCountFile(path));
+	}
+	
+	static class MockWordList extends WordList {
+		protected MockWordList(final String language) {
+			super(new Language(language));
+		}
+		
+		@Override
+		public boolean containsWord(final Word word) {
+			return false;
+		}
+		
+		@Override
+		public Double getLikelihood(final Word word) {
+			return null;
+		}
 	}
 }
