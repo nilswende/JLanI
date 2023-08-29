@@ -8,15 +8,12 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.Properties;
 import java.util.Set;
 
 /**
  * Flags words as unwanted using an in-memory blacklist.
  */
 public class InMemoryBlacklist implements Blacklist {
-	static final String PROPERTY = "BlacklistFile";
 	private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryBlacklist.class);
 	private final Set<Word> blacklist;
 	
@@ -27,20 +24,18 @@ public class InMemoryBlacklist implements Blacklist {
 	/**
 	 * Creates a new Blacklist from a list of words.
 	 *
-	 * @param properties the JLanI properties. May contain a path to a blacklist file
+	 * @param pathString the path to a blacklist file
 	 */
-	public static Blacklist ofProperty(final Properties properties) {
-		Objects.requireNonNull(properties);
-		var pathString = properties.getProperty(PROPERTY);
+	public static Blacklist ofPath(final String pathString) {
 		if (pathString == null) {
 			return new NullBlacklist();
 		} else if (pathString.isBlank()) {
-			LOGGER.info("Ignored empty '{}' declaration", PROPERTY);
+			LOGGER.info("Ignored empty path");
 			return new NullBlacklist();
 		}
 		var path = Path.of(pathString);
 		if (Files.notExists(path)) {
-			LOGGER.warn("Ignored missing '{}': {}", PROPERTY, path.toAbsolutePath());
+			LOGGER.warn("Ignored missing path: {}", path.toAbsolutePath());
 			return new NullBlacklist();
 		}
 		try (var reader = new InputStreamReader(Files.newInputStream(path))) {

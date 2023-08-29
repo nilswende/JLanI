@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.StringReader;
 import java.util.Arrays;
-import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,29 +42,22 @@ class BlacklistTest {
 	
 	@Test
 	void testMissingProperty() {
-		var properties = new Properties();
-		assertNotNull(InMemoryBlacklist.ofProperty(properties));
+		assertNotNull(InMemoryBlacklist.ofPath(null));
 	}
 	
 	@Test
 	void testBlankProperty() {
-		var properties = new Properties();
-		properties.setProperty(InMemoryBlacklist.PROPERTY, " ");
-		assertNotNull(InMemoryBlacklist.ofProperty(properties));
+		assertNotNull(InMemoryBlacklist.ofPath(" "));
 	}
 	
 	@Test
 	void testMissingFile() {
-		var properties = new Properties();
-		properties.setProperty(InMemoryBlacklist.PROPERTY, "./missing.txt");
-		assertNotNull(InMemoryBlacklist.ofProperty(properties));
+		assertNotNull(InMemoryBlacklist.ofPath("./missing.txt"));
 	}
 	
 	@Test
 	void testFile() {
-		var properties = new Properties();
-		properties.setProperty(InMemoryBlacklist.PROPERTY, "./src/test/resources/blacklist.txt");
-		var actual = InMemoryBlacklist.ofProperty(properties);
+		var actual = InMemoryBlacklist.ofPath("./src/test/resources/blacklist.txt");
 		assertNotNull(actual);
 		assertTrue(actual.isBlacklisted(new Word("list")));
 	}

@@ -1,7 +1,5 @@
 package com.wn.nlp.jlani.impl;
 
-import java.util.Objects;
-import java.util.Properties;
 import java.util.regex.Pattern;
 
 /**
@@ -12,17 +10,6 @@ public class RegexSentenceCleaner implements SentenceCleaner {
 	
 	private RegexSentenceCleaner(final String regex) {
 		disallowed = Pattern.compile(regex);
-	}
-	
-	/**
-	 * Creates a new SentenceCleaner from a regular expression.
-	 *
-	 * @param properties the JLanI properties. May contain a regular expression
-	 */
-	public static SentenceCleaner ofProperty(final Properties properties) {
-		Objects.requireNonNull(properties);
-		var regex = properties.getProperty("SpecialChars");
-		return ofRegex(regex);
 	}
 	
 	/**

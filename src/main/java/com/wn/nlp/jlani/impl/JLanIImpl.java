@@ -4,37 +4,20 @@ import com.wn.nlp.jlani.*;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 /**
  * The default JLanI implementation.
  */
 public class JLanIImpl implements JLanI {
-	private static final Path PROPERTIES_PATH = Path.of("./config/jlani/lanikernel.ini");
-	private final Properties properties;
 	private final WordLists wordLists;
 	
 	public JLanIImpl(final WordLists wordLists) {
-		properties = initProperties();
 		this.wordLists = Objects.requireNonNull(wordLists);
-	}
-	
-	private Properties initProperties() {
-		var properties = new Properties();
-		if (Files.exists(PROPERTIES_PATH)) {
-			try (var reader = new InputStreamReader(Files.newInputStream(PROPERTIES_PATH))) {
-				properties.load(reader);
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
-		}
-		return properties;
 	}
 	
 	@Override
@@ -77,8 +60,8 @@ public class JLanIImpl implements JLanI {
 	}
 	
 	private List<Word> preprocessSentence(final Request request) {
-		var cleaner = RegexSentenceCleaner.ofProperty(properties);
-		var blacklist = InMemoryBlacklist.ofProperty(properties);
+		var cleaner = RegexSentenceCleaner.ofRegex(Preferences.INSTANCE.get(Preferences.SPECIAL_CHARS));
+		var blacklist = InMemoryBlacklist.ofPath(Preferences.INSTANCE.get(Preferences.BLACKLIST_FILE));
 		
 		var sentence = request.getSentence();
 		var cleanedSentence = cleaner.apply(sentence);
