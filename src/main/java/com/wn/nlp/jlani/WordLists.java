@@ -10,6 +10,11 @@ import java.util.*;
 public class WordLists {
 	private final Map<Language, WordList> availableWordLists = new HashMap<>();
 	
+	/**
+	 * Adds a wordlist to the collection.
+	 *
+	 * @param wordList the wordlist
+	 */
 	public void addWordList(final WordList wordList) {
 		Objects.requireNonNull(wordList);
 		availableWordLists.put(wordList.getLanguage(), wordList);

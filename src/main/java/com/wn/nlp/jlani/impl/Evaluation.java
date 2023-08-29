@@ -4,8 +4,9 @@ import com.wn.nlp.jlani.WordList;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Evaluates words based on a given set of wordlists.

@@ -27,7 +27,7 @@ public class JLanIImpl implements JLanI {
 	
 	public JLanIImpl(final WordLists wordLists) {
 		initProperties();
-		this.wordLists = wordLists;
+		this.wordLists = Objects.requireNonNull(wordLists);
 	}
 	
 	private void initProperties() {
@@ -80,8 +80,8 @@ public class JLanIImpl implements JLanI {
 	}
 	
 	private List<String> sampleWords(final List<String> splitSentence, final int wordsToCheck) {
-		var stepping = splitSentence.size() / wordsToCheck;
-		return IntStream.iterate(0, i -> i < splitSentence.size(), i -> i + stepping)
+		var step = splitSentence.size() / wordsToCheck;
+		return IntStream.iterate(0, i -> i < wordsToCheck, i -> i + step)
 				.mapToObj(splitSentence::get)
 				.toList();
 	}
