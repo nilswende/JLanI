@@ -28,12 +28,20 @@ public class Request {
 	 *
 	 * @param sentence     The sentence whose language should be identified.
 	 * @param languages    The languages that should be considered. Leave empty to have all available languages considered.
-	 * @param wordsToCheck The number of words to consider from the sentence. Any number below {@code 1} will cause all words to be considered.
+	 * @param wordsToCheck The upper limit of words to consider from the sentence. Any number below {@code 1} will cause all words to be considered.
 	 */
 	public Request(final String sentence, final Set<Language> languages, final int wordsToCheck) {
 		this.sentence = Objects.requireNonNull(sentence);
 		this.languages = Objects.requireNonNull(languages);
 		this.wordsToCheck = wordsToCheck;
+	}
+	
+	public boolean limitWords() {
+		return wordsToCheck >= 1;
+	}
+	
+	public boolean limitWords(final int actualCount) {
+		return limitWords() && actualCount > wordsToCheck;
 	}
 	
 	public String getSentence() {

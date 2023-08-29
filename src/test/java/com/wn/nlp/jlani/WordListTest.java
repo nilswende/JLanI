@@ -1,5 +1,6 @@
-package com.wn.nlp.jlani.impl;
+package com.wn.nlp.jlani;
 
+import com.wn.nlp.jlani.impl.InMemoryWordList;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WordListTest {
-	private InMemoryWordList getWordList(final String wordlist) {
+	private WordList getWordList(final String wordlist) {
 		return InMemoryWordList.ofSerializedFileReader(new StringReader(wordlist), new Language("de"));
 	}
 	

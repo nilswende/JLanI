@@ -5,5 +5,6 @@ package com.wn.nlp.jlani;
  * Identifies the most likely language of an unknown text.
  */
 public interface JLanI {
+	void addWordList(WordList wordList);
 	Response evaluate(Request request);
 }
