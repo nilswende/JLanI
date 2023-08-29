@@ -4,11 +4,9 @@ import com.wn.nlp.jlani.*;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 /**
  * The default JLanI implementation.
@@ -24,7 +22,7 @@ public class JLanIImpl implements JLanI {
 	public Response evaluate(final Request request) {
 		Objects.requireNonNull(request);
 		var evaluatedWordLists = wordLists.getEvaluatedWordLists(request.getLanguages());
-		var sentence = preprocessSentence(request);
+		var sentence = new Preprocessor().preprocessSentence(request);
 		
 		var response = new Response(evaluatedWordLists.keySet(), sentence.size());
 		
@@ -57,27 +55,5 @@ public class JLanIImpl implements JLanI {
 				}
 			}
 		}
-	}
-	
-	private List<Word> preprocessSentence(final Request request) {
-		var cleaner = RegexSentenceCleaner.ofRegex(Preferences.INSTANCE.get(Preferences.SPECIAL_CHARS));
-		var blacklist = InMemoryBlacklist.ofPath(Preferences.INSTANCE.get(Preferences.BLACKLIST_FILE));
-		
-		var sentence = request.getSentence();
-		var cleanedSentence = cleaner.apply(sentence);
-		var splitSentence = Arrays.asList(cleanedSentence.split(" "));
-		var limitedSentence = request.limitWords(splitSentence.size()) ? sampleWords(splitSentence, request.getWordsToCheck()) : splitSentence;
-		
-		return limitedSentence.stream()
-				.map(Word::new)
-				.filter(word -> !blacklist.isBlacklisted(word))
-				.toList();
-	}
-	
-	private List<String> sampleWords(final List<String> splitSentence, final int wordsToCheck) {
-		var step = splitSentence.size() / wordsToCheck;
-		return IntStream.iterate(0, i -> i < wordsToCheck, i -> i + step)
-				.mapToObj(splitSentence::get)
-				.toList();
 	}
 }
