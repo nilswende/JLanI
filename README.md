@@ -32,3 +32,22 @@ public class Example {
 	}
 }
 ````
+
+Create a wordfile from your own reference corpus:
+
+````java
+import com.wn.nlp.jlani.Request;
+import com.wn.nlp.jlani.WordFileCreator;
+
+import java.nio.file.Path;
+
+public class Example {
+	public static void main(String[] args) {
+		var text = """
+				identifies the most likely language of an unknown text
+				""";
+		new WordFileCreator().create(new Request(text), Path.of("./new.txt"));
+	}
+}
+
+````
