@@ -9,13 +9,23 @@ import java.util.*;
  * The response to a {@link Request} for language identification.
  */
 public class Response {
-	private final Map<Language, Result> results;
+	private final Map<Language, Result> results = new HashMap<>();
 	private final int checkedWords;
 	
-	public Response(final Map<Language, Result> results, final int checkedWords) {
+	public Response(final Set<Language> languages, final int checkedWords) {
+		this(checkedWords);
+		Objects.requireNonNull(languages).forEach(this::createResult);
+	}
+	
+	public Response(final int checkedWords) {
 		if (checkedWords < 1) throw new IllegalArgumentException("No words checked");
-		this.results = Objects.requireNonNull(results);
 		this.checkedWords = checkedWords;
+	}
+	
+	public Result createResult(final Language language) {
+		var result = new Result();
+		results.put(language, result);
+		return result;
 	}
 	
 	@Override
@@ -43,15 +53,9 @@ public class Response {
 	/**
 	 * The result of a language identification for a specific language.
 	 */
-	public static class Result implements Comparable<Result> {
+	public class Result implements Comparable<Result> {
 		private double score = 1.0;
 		private final List<Word> words = new ArrayList<>();
-		private final int checkedWords;
-		
-		public Result(final int checkedWords) {
-			if (checkedWords < 1) throw new IllegalArgumentException("No words checked");
-			this.checkedWords = checkedWords;
-		}
 		
 		public void addScore(final double score) {
 			this.score *= score;
@@ -71,7 +75,7 @@ public class Response {
 			return "Result{" +
 				   "score=" + score +
 				   ", words=" + words +
-				   ", checkedWords=" + checkedWords +
+				   ", coverage=" + getCoverage() +
 				   '}';
 		}
 		

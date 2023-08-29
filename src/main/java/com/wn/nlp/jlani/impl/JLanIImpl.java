@@ -1,7 +1,9 @@
 package com.wn.nlp.jlani.impl;
 
-import com.wn.nlp.jlani.*;
-import com.wn.nlp.jlani.value.Language;
+import com.wn.nlp.jlani.JLanI;
+import com.wn.nlp.jlani.Request;
+import com.wn.nlp.jlani.Response;
+import com.wn.nlp.jlani.WordLists;
 import com.wn.nlp.jlani.value.Word;
 
 import java.io.IOException;
@@ -9,7 +11,10 @@ import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Properties;
 import java.util.stream.IntStream;
 
 /**
@@ -42,14 +47,13 @@ public class JLanIImpl implements JLanI {
 		var evaluation = new Evaluation(evaluatedWordLists);
 		var sentence = preprocessSentence(request);
 		
-		var results = new HashMap<Language, Response.Result>();
-		evaluatedWordLists.keySet().forEach(l -> results.put(l, new Response.Result(sentence.size())));
+		var response = new Response(evaluatedWordLists.keySet(), sentence.size());
 		
 		for (final var word : sentence) {
 			var evaluated = evaluation.evaluate(word);
 			for (final var entry : evaluated.entrySet()) {
 				var language = entry.getKey();
-				var result = results.get(language);
+				var result = response.getResults().get(language);
 				result.addScore(entry.getValue());
 				if (evaluatedWordLists.get(language).containsWord(word)) {
 					result.addWord(word);
@@ -58,7 +62,7 @@ public class JLanIImpl implements JLanI {
 			}
 		}
 		
-		return new Response(results, sentence.size());
+		return response;
 	}
 	
 	private List<Word> preprocessSentence(final Request request) {

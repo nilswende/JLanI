@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,45 +44,30 @@ class JLanITest {
 	}
 	
 	static Stream<Arguments> evaluate() {
+		var response1 = new Response(12);
+		createResult(response1, new Language("de"),
+				2.5831781969994968E-15,
+				List.of("is", "the", "is", "the"));
+		createResult(response1, new Language("en"),
+				397.23624780727886,
+				List.of("my", "is", "over", "the", "my", "is", "over", "the", "see"));
+		var response2 = new Response(13);
+		createResult(response2, new Language("de"),
+				0.0074838949003064,
+				List.of("und", "bin", "ich", "ein", "kurzer", "deutscher", "Satz"));
+		createResult(response2, new Language("en"),
+				9.354868625383001E-7,
+				List.of("last", "but", "not", "least"));
+		
 		return Stream.of(
-				arguments(new Request("my pony is over the ocean, my bonny is over the see"),
-						new TestResponse(Map.of(
-								new Language("de"),
-								new TestResponse.TestResult(2.5831781969994968E-15,
-										List.of("is", "the", "is", "the"),
-										12),
-								new Language("en"),
-								new TestResponse.TestResult(397.23624780727886,
-										List.of("my", "is", "over", "the", "my", "is", "over", "the", "see"),
-										12)
-						),
-								12)),
-				arguments(new Request(" und last but not least, bin ich ein _kurzer_ deutscher Satz (hubergel)!"),
-						new TestResponse(Map.of(
-								new Language("de"),
-								new TestResponse.TestResult(0.0074838949003064,
-										List.of("und", "bin", "ich", "ein", "kurzer", "deutscher", "Satz"),
-										13),
-								new Language("en"),
-								new TestResponse.TestResult(9.354868625383001E-7,
-										List.of("last", "but", "not", "least"),
-										13)
-						),
-								13))
+				arguments(new Request("my pony is over the ocean, my bonny is over the see"), response1),
+				arguments(new Request(" und last but not least, bin ich ein _kurzer_ deutscher Satz (hubergel)!"), response2)
 		);
 	}
 	
-	static class TestResponse extends Response {
-		public TestResponse(final Map<Language, Result> results, int checkedWords) {
-			super(results, checkedWords);
-		}
-		
-		static class TestResult extends Result {
-			public TestResult(double score, List<String> words, int checkedWords) {
-				super(checkedWords);
-				addScore(score);
-				words.forEach(w -> addWord(new Word(w)));
-			}
-		}
+	static void createResult(Response response, Language language, double score, List<String> words) {
+		var result = response.createResult(language);
+		result.addScore(score);
+		words.forEach(w -> result.addWord(new Word(w)));
 	}
 }
