@@ -42,6 +42,10 @@ public class Response {
 				.orElse(null);
 	}
 	
+	public Result getResult(final Language language) {
+		return results.get(language);
+	}
+	
 	public Map<Language, Result> getResults() {
 		return results;
 	}

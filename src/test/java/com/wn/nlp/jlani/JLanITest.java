@@ -33,7 +33,7 @@ class JLanITest {
 		for (final var entry : expected.getResults().entrySet()) {
 			var expectedLanguage = entry.getKey();
 			var expectedResult = entry.getValue();
-			var actualResult = actual.getResults().get(expectedLanguage);
+			var actualResult = actual.getResult(expectedLanguage);
 			assertNotNull(actualResult);
 			assertEquals(expectedResult.getScore(), actualResult.getScore());
 			assertEquals(expectedResult.getWords(), actualResult.getWords());
