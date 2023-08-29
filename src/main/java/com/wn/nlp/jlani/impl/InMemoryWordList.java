@@ -3,24 +3,23 @@ package com.wn.nlp.jlani.impl;
 import com.wn.nlp.jlani.WordList;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Maps words of a language to their likelihood using an in-memory word list.
  */
 public class InMemoryWordList extends WordList {
-	private final Map<Word, Double> map;
+	private final Map<Word, Double> wordlist;
 	
-	public InMemoryWordList(final Map<Word, Double> map, final Language language) {
+	private InMemoryWordList(final Map<Word, Double> wordlist, final Language language) {
 		super(language);
-		this.map = map;
+		this.wordlist = Objects.requireNonNull(wordlist);
 	}
 	
 	/**
@@ -69,6 +68,6 @@ public class InMemoryWordList extends WordList {
 	
 	@Override
 	public Double getLikelihood(final Word word) {
-		return map.get(word);
+		return wordlist.get(word);
 	}
 }

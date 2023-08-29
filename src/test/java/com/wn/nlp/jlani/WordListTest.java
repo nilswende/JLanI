@@ -25,7 +25,7 @@ class WordListTest {
 		var wordList = getWordList(wordlistStr);
 		assertEquals(wordList.getLanguage(), new Language("de"));
 		assertTrue(wordList.getLikelihood(new Word("Rat")) > 0);
-		assertEquals(0, wordList.getLikelihood(new Word("Maus")));
+		assertNull(wordList.getLikelihood(new Word("Maus")));
 	}
 	
 	@Test
@@ -34,6 +34,6 @@ class WordListTest {
 		var wordList = InMemoryWordList.ofSerializedFile(path);
 		assertEquals(wordList.getLanguage(), new Language("de"));
 		assertTrue(wordList.getLikelihood(new Word("Rat")) > 0);
-		assertEquals(0, wordList.getLikelihood(new Word("Maus")));
+		assertNull(wordList.getLikelihood(new Word("Maus")));
 	}
 }

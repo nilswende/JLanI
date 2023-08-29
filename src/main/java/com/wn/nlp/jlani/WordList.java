@@ -12,7 +12,7 @@ public abstract class WordList {
 	private final Language language;
 	
 	protected WordList(final Language language) {
-		this.language = language;
+		this.language = Objects.requireNonNull(language);
 	}
 	
 	/**

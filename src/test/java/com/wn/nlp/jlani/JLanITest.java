@@ -3,8 +3,6 @@ package com.wn.nlp.jlani;
 import com.wn.nlp.jlani.impl.InMemoryWordList;
 import com.wn.nlp.jlani.impl.JLanIImpl;
 import com.wn.nlp.jlani.value.Language;
-import com.wn.nlp.jlani.value.Word;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,9 +19,10 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 class JLanITest {
 	
 	private Response evaluate(final Request request) {
-		var jLanI = new JLanIImpl();
-		jLanI.addWordList(InMemoryWordList.ofSerializedFile(Path.of("./resources/wordlists/de.txt")));
-		jLanI.addWordList(InMemoryWordList.ofSerializedFile(Path.of("./resources/wordlists/en.txt")));
+		var wordLists = new WordLists();
+		wordLists.addWordList(InMemoryWordList.ofSerializedFile(Path.of("./resources/wordlists/de.txt")));
+		wordLists.addWordList(InMemoryWordList.ofSerializedFile(Path.of("./resources/wordlists/en.txt")));
+		var jLanI = new JLanIImpl(wordLists);
 		return jLanI.evaluate(request);
 	}
 	

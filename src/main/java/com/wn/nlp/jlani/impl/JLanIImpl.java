@@ -3,7 +3,7 @@ package com.wn.nlp.jlani.impl;
 import com.wn.nlp.jlani.JLanI;
 import com.wn.nlp.jlani.Request;
 import com.wn.nlp.jlani.Response;
-import com.wn.nlp.jlani.WordList;
+import com.wn.nlp.jlani.WordLists;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 
@@ -21,10 +21,11 @@ import java.util.stream.IntStream;
 public class JLanIImpl implements JLanI {
 	private static final Path PROPERTIES_PATH = Path.of("./config/jlani/lanikernel.ini");
 	private final Properties properties = new Properties();
-	private final Map<Language, WordList> availableWordLists = new HashMap<>();
+	private final WordLists wordLists;
 	
-	public JLanIImpl() {
+	public JLanIImpl(final WordLists wordLists) {
 		initProperties();
+		this.wordLists = wordLists;
 	}
 	
 	private void initProperties() {
@@ -38,16 +39,9 @@ public class JLanIImpl implements JLanI {
 	}
 	
 	@Override
-	public void addWordList(final WordList wordList) {
-		Objects.requireNonNull(wordList);
-		availableWordLists.put(wordList.getLanguage(), wordList);
-	}
-	
-	@Override
 	public Response evaluate(final Request request) {
-		if (availableWordLists.isEmpty()) throw new IllegalStateException("No wordlists available");
 		Objects.requireNonNull(request);
-		var evaluatedWordLists = getEvaluatedWordLists(request.getLanguages());
+		var evaluatedWordLists = wordLists.getEvaluatedWordLists(request.getLanguages());
 		var evaluation = new Evaluation(evaluatedWordLists);
 		var sentence = preprocessSentence(request);
 		var scores = new HashMap<Language, Double>();
@@ -64,16 +58,6 @@ public class JLanIImpl implements JLanI {
 		var results = new HashMap<Language, Response.Result>();
 		evaluatedWordLists.keySet().forEach(l -> results.put(l, new Response.Result(scores.get(l), words.get(l), sentence.size())));
 		return new Response(results, sentence.size());
-	}
-	
-	private Map<Language, WordList> getEvaluatedWordLists(final Set<Language> languages) {
-		if (!availableWordLists.keySet().containsAll(languages)) {
-			var unknown = new HashSet<>(languages).removeAll(availableWordLists.keySet());
-			throw new IllegalArgumentException("Unknown languages requested: " + unknown);
-		}
-		var map = new HashMap<>(availableWordLists);
-		map.keySet().retainAll(languages.isEmpty() ? availableWordLists.keySet() : languages);
-		return map;
 	}
 	
 	private List<Word> preprocessSentence(final Request request) {
