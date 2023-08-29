@@ -29,11 +29,20 @@ class WordListTest {
 	}
 	
 	@Test
-	void testFile() {
+	void testSerializedFile() {
 		var path = Path.of("./resources/wordlists/de.txt");
 		var wordList = InMemoryWordList.ofSerializedFile(path);
 		assertEquals(wordList.getLanguage(), new Language("de"));
 		assertTrue(wordList.getLikelihood(new Word("Rat")) > 0);
 		assertNull(wordList.getLikelihood(new Word("Maus")));
+	}
+	
+	@Test
+	void testWordCountFile() {
+		var path = Path.of("./src/test/resources/en.txt");
+		var wordList = InMemoryWordList.ofWordCountFile(path);
+		assertEquals(wordList.getLanguage(), new Language("en"));
+		assertEquals(0.5, wordList.getLikelihood(new Word("prepare")));
+		assertNull(wordList.getLikelihood(new Word("full")));
 	}
 }
