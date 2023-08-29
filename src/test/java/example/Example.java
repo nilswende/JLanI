@@ -1,10 +1,5 @@
-# JLanI 2
-Reimplementation of the venerable language identification tool [JLanI](https://toolbox.wortschatz.uni-leipzig.de/toolbox/textclassification/jlani).
-It identifies the most likely language of an unknown text.
+package example;
 
-Example:
-
-````java
 import com.wn.nlp.jlani.Request;
 import com.wn.nlp.jlani.WordLists;
 import com.wn.nlp.jlani.impl.InMemoryWordList;
@@ -31,4 +26,3 @@ public class Example {
 		return wordLists;
 	}
 }
-````
