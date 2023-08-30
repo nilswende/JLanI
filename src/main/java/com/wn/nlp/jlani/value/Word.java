@@ -13,9 +13,4 @@ public record Word(
 	public Word {
 		Objects.requireNonNull(value);
 	}
-	
-	public Word strip() {
-		var strip = value.strip();
-		return strip.equals(value) ? this : new Word(strip);
-	}
 }
