@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.stream.Collectors;
 
 /**
- * Creates a wordfile for language identification from a given text.
+ * Creates a wordlist for language identification from a given text.
  */
 public class WordListCreator {
 	public void create(final Request request, final Path path) {
