@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Creates a wordfile for language identification from a given text.
  */
-public class WordFileCreator {
+public class WordListCreator {
 	public void create(final Request request, final Path path) {
 		var words = new Preprocessor().preprocessSentence(request);
 		var wordCounts = words.stream().collect(Collectors.groupingBy(w -> w, Collectors.counting()));
@@ -32,8 +32,8 @@ public class WordFileCreator {
 	
 	public static void main(String[] args) {
 		var text = """
-				identifies the most likely language of an unknown text text
+				identifies the most likely language of an unknown text
 				""";
-		new WordFileCreator().create(new Request(text), Path.of("./lang.txt"));
+		new WordListCreator().create(new Request(text), Path.of("./lang.txt"));
 	}
 }

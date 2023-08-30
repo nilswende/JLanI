@@ -33,11 +33,11 @@ public class Example {
 }
 ````
 
-Create a wordfile from your own reference corpus:
+Create a wordlist from your own reference corpus:
 
 ````java
 import com.wn.nlp.jlani.Request;
-import com.wn.nlp.jlani.WordFileCreator;
+import com.wn.nlp.jlani.WordListCreator;
 
 import java.nio.file.Path;
 
@@ -46,8 +46,7 @@ public class Example {
 		var text = """
 				identifies the most likely language of an unknown text
 				""";
-		new WordFileCreator().create(new Request(text), Path.of("./new.txt"));
+		new WordListCreator().create(new Request(text), Path.of("./lang.txt"));
 	}
 }
-
 ````
