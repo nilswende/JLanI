@@ -9,18 +9,18 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Evaluates words based on a given set of wordlists.
+ * Evaluates the score of words based on a given set of wordlists.
  */
-class Evaluation {
+class Scoring {
 	private static final double REMAINDER_BASE = 0.1;
 	private final Map<Language, WordList> wordLists;
 	
-	public Evaluation(final Map<Language, WordList> wordLists) {
+	public Scoring(final Map<Language, WordList> wordLists) {
 		this.wordLists = wordLists;
 	}
 	
 	/**
-	 * Evaluates a word.
+	 * Evaluates the score of a word.
 	 *
 	 * @param word the word
 	 * @return the evaluated languages and the likelihood of the word belonging to each

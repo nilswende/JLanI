@@ -33,27 +33,17 @@ public class JLanIImpl implements JLanI {
 	}
 	
 	private void evaluateScore(final Map<Language, WordList> evaluatedWordLists, final List<Word> sentence, final Response response) {
-		var evaluation = new Evaluation(evaluatedWordLists);
+		var scoring = new Scoring(evaluatedWordLists);
 		for (final var word : sentence) {
-			var evaluated = evaluation.evaluate(word);
-			for (final var entry : evaluated.entrySet()) {
-				var language = entry.getKey();
-				var result = response.getResult(language);
-				result.addScore(entry.getValue());
-			}
+			var scores = scoring.evaluate(word);
+			scores.forEach((language, score) -> response.getResult(language).addScore(score));
 		}
 	}
 	
 	private void evaluateWords(final Map<Language, WordList> evaluatedWordLists, final List<Word> sentence, final Response response) {
-		for (final var entry : evaluatedWordLists.entrySet()) {
-			var language = entry.getKey();
-			var wordList = entry.getValue();
+		evaluatedWordLists.forEach((language, wordList) -> {
 			var result = response.getResult(language);
-			for (final var word : sentence) {
-				if (wordList.containsWord(word)) {
-					result.addWord(word);
-				}
-			}
-		}
+			sentence.stream().filter(wordList::containsWord).forEach(result::addWord);
+		});
 	}
 }
