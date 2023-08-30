@@ -4,10 +4,10 @@ import com.wn.nlp.jlani.Preferences;
 import com.wn.nlp.jlani.Request;
 import com.wn.nlp.jlani.value.Word;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.IntStream;
 
 /**
  * Preprocesses a sentence for language identification.
@@ -32,8 +32,10 @@ public class Preprocessor {
 	
 	private List<String> sampleWords(final List<String> splitSentence, final int wordsToCheck) {
 		var step = splitSentence.size() / wordsToCheck;
-		return IntStream.iterate(0, i -> i < wordsToCheck, i -> i + step)
-				.mapToObj(splitSentence::get)
-				.toList();
+		var sample = new ArrayList<String>();
+		for (int i = 0; i < splitSentence.size() && sample.size() < wordsToCheck; i += step) {
+			sample.add(splitSentence.get(i));
+		}
+		return sample;
 	}
 }
