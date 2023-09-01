@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WordListTest {
 	private WordList getWordList(final String wordlist) {
-		return InMemoryWordList.ofSerializedFileReader(new StringReader(wordlist), new Language("de"));
+		return DeserializedWordList.ofFileReader(new StringReader(wordlist), new Language("de"));
 	}
 	
 	@Test
@@ -49,21 +49,6 @@ class WordListTest {
 				-2 Rat
 				""";
 		assertThrows(IllegalArgumentException.class, () -> InMemoryWordList.ofWordCountFileReader(new StringReader(wordlistStr), new Language("de")));
-	}
-	
-	@Test
-	void testSerializedFile() {
-		var path = Path.of("./resources/wordlists/de.txt");
-		var wordList = InMemoryWordList.ofSerializedFile(path);
-		assertEquals(wordList.getLanguage(), new Language("de"));
-		assertTrue(wordList.getLikelihood(new Word("Rat")) > 0);
-		assertNull(wordList.getLikelihood(new Word("Maus")));
-	}
-	
-	@Test
-	void testMissingSerializedFile() {
-		var path = Path.of("./resources/wordlists/missing.txt");
-		assertThrows(IllegalArgumentException.class, () -> InMemoryWordList.ofSerializedFile(path));
 	}
 	
 	@Test

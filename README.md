@@ -2,20 +2,17 @@
 Reimplementation of the venerable language identification tool [JLanI](https://toolbox.wortschatz.uni-leipzig.de/toolbox/textclassification/jlani).
 It identifies the most likely language of an unknown text.
 
+The languages available by default are German, English and French.
+
 Example:
 
 ````java
 import com.wn.nlp.jlani.Request;
-import com.wn.nlp.jlani.WordLists;
-import com.wn.nlp.jlani.impl.InMemoryWordList;
 import com.wn.nlp.jlani.impl.JLanIImpl;
 
-import java.nio.file.Path;
-
-public class Example {
+class Example {
 	public static void main(String[] args) {
-		var wordLists = createWordLists();
-		var jLanI = new JLanIImpl(wordLists);
+		var jLanI = new JLanIImpl();
 		
 		var request = new Request("JLanI identifies the most likely language of an unknown text");
 		var response = jLanI.evaluate(request);
@@ -23,30 +20,32 @@ public class Example {
 		var language = response.getMostLikelyResult().getKey();
 		System.out.println(language.name()); // prints 'en'
 	}
-	
-	private static WordLists createWordLists() {
-		var wordLists = new WordLists();
-		wordLists.addWordList(InMemoryWordList.ofSerializedFile(Path.of("./resources/wordlists/de.txt")));
-		wordLists.addWordList(InMemoryWordList.ofSerializedFile(Path.of("./resources/wordlists/en.txt")));
-		return wordLists;
-	}
 }
 ````
+
+## Other languages
 
 Create a wordlist from your own reference corpus:
 
 ````java
 import com.wn.nlp.jlani.Request;
 import com.wn.nlp.jlani.WordListCreator;
+import com.wn.nlp.jlani.util.IOUtil;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
-public class Example {
-	public static void main(String[] args) {
+class TextWordListCreator {
+	public static void main(String[] args) throws IOException {
 		var text = """
-				identifies the most likely language of an unknown text
+				any text representing the target language as best it can
 				""";
-		new WordListCreator().create(new Request(text), Path.of("./lang.txt"));
+		try (var writer = IOUtil.newFileWriter(Path.of("./lang.txt"), true)) {
+			new WordListCreator().createFromText(new Request(text), writer);
+		}
 	}
 }
 ````
+
+and drop it in ``resources/jlani/wordlists`` to be available on startup.

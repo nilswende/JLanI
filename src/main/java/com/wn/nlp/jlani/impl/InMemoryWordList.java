@@ -1,10 +1,14 @@
 package com.wn.nlp.jlani.impl;
 
 import com.wn.nlp.jlani.WordList;
+import com.wn.nlp.jlani.util.IOUtil;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -18,43 +22,12 @@ import java.util.function.ToDoubleFunction;
 public class InMemoryWordList extends WordList {
 	private final Map<Word, Double> wordlist;
 	
-	private InMemoryWordList(final Map<Word, Double> wordlist, final Language language) {
+	public InMemoryWordList(final Map<Word, Double> wordlist, final Language language) {
 		super(language);
 		this.wordlist = Objects.requireNonNull(wordlist);
 	}
 	
-	/**
-	 * Creates a new WordList from a formerly serialized wordlist file dump.<br>
-	 * The file format is: {@code (<hex> <word>)*}
-	 *
-	 * @param path Path to the wordlist file. Its name is expected to be the language name, e.g. {@code en.txt}.
-	 */
-	public static WordList ofSerializedFile(final Path path) {
-		if (Files.notExists(path)) {
-			throw new IllegalArgumentException("Missing file: " + path.toAbsolutePath());
-		}
-		var languageName = path.getFileName().toString().split("\\.")[0];
-		var language = new Language(languageName);
-		try (var reader = new InputStreamReader(Files.newInputStream(path))) {
-			return ofSerializedFileReader(reader, language);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
-	
-	/**
-	 * Creates a new WordList from a formerly serialized wordlist file dump.<br>
-	 * The file format is: {@code (<hex> <word>)*}
-	 *
-	 * @param reader   the content of the wordlist file
-	 * @param language the language of the wordlist file
-	 */
-	public static WordList ofSerializedFileReader(final Reader reader, final Language language) {
-		var map = ofReader(reader, s -> Double.longBitsToDouble(Long.parseUnsignedLong(s, 16)));
-		return new InMemoryWordList(map, language);
-	}
-	
-	private static Map<Word, Double> ofReader(final Reader reader, final ToDoubleFunction<String> transform) {
+	public static Map<Word, Double> ofReader(final Reader reader, final ToDoubleFunction<String> transform) {
 		var map = new HashMap<Word, Double>();
 		try (var lineReader = new LineNumberReader(reader)) {
 			for (String line; (line = lineReader.readLine()) != null; ) {
@@ -77,15 +50,16 @@ public class InMemoryWordList extends WordList {
 	 * Creates a new WordList from a wordlist file containing word counts.<br>
 	 * The file format is: {@code (<int> <word>)*}
 	 *
-	 * @param path Path to the wordlist file. Its name is expected to be the language name, e.g. {@code en.txt}.
+	 * @param path Path to the wordlist file. Its name is expected to be the language name, e.g. {@code en.txt.gz}.
 	 */
 	public static WordList ofWordCountFile(final Path path) {
 		if (Files.notExists(path)) {
 			throw new IllegalArgumentException("Missing file: " + path.toAbsolutePath());
 		}
-		var languageName = path.getFileName().toString().split("\\.")[0];
+		var fileName = path.getFileName().toString();
+		var languageName = fileName.split("\\.")[0];
 		var language = new Language(languageName);
-		try (var reader = new InputStreamReader(Files.newInputStream(path))) {
+		try (var reader = IOUtil.newFileReader(path)) {
 			return ofWordCountFileReader(reader, language);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);

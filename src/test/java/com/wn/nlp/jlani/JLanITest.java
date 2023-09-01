@@ -1,9 +1,9 @@
 package com.wn.nlp.jlani;
 
-import com.wn.nlp.jlani.impl.InMemoryWordList;
 import com.wn.nlp.jlani.impl.JLanIImpl;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,18 +18,18 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class JLanITest {
 	
-	private Response evaluate(final Request request) {
+	private Response evaluateDeserialized(final Request request) {
 		var wordLists = new WordLists();
-		wordLists.addWordList(InMemoryWordList.ofSerializedFile(Path.of("./resources/wordlists/de.txt")));
-		wordLists.addWordList(InMemoryWordList.ofSerializedFile(Path.of("./resources/wordlists/en.txt")));
+		wordLists.addWordList(DeserializedWordList.ofFile(Path.of("wordlists/de.ser.txt.gz")));
+		wordLists.addWordList(DeserializedWordList.ofFile(Path.of("wordlists/en.ser.txt.gz")));
 		var jLanI = new JLanIImpl(wordLists);
 		return jLanI.evaluate(request);
 	}
 	
 	@ParameterizedTest
 	@MethodSource
-	void evaluate(final Request request, final Response expected) {
-		var actual = evaluate(request);
+	void evaluateDeserialized(final Request request, final Response expected) {
+		var actual = evaluateDeserialized(request);
 		for (final var entry : expected.getResults().entrySet()) {
 			var expectedLanguage = entry.getKey();
 			var expectedResult = entry.getValue();
@@ -43,7 +43,7 @@ class JLanITest {
 		assertEquals(expected.getCheckedWords(), actual.getCheckedWords());
 	}
 	
-	static Stream<Arguments> evaluate() {
+	static Stream<Arguments> evaluateDeserialized() {
 		var response1 = new Response(12);
 		createResult(response1, new Language("de"),
 				2.5831781969994968E-15,
@@ -69,5 +69,12 @@ class JLanITest {
 		var result = response.createResult(language);
 		result.addScore(score);
 		words.forEach(w -> result.addWord(new Word(w)));
+	}
+	
+	@Test
+	void evaluateDefault() {
+		var jLanI = new JLanIImpl();
+		var actual = jLanI.evaluate(new Request("identifies the most likely language of an unknown text"));
+		assertEquals("en", actual.getMostLikelyResult().getKey().name());
 	}
 }
