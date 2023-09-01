@@ -33,7 +33,6 @@ import com.wn.nlp.jlani.WordListCreator;
 import com.wn.nlp.jlani.util.IOUtil;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
 class TextWordListCreator {
