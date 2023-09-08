@@ -1,6 +1,5 @@
-package com.wn.nlp.jlani;
+package com.wn.nlp.jlani.impl;
 
-import com.wn.nlp.jlani.impl.RegexSentenceCleaner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

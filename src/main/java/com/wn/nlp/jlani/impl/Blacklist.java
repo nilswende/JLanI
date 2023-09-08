@@ -1,4 +1,4 @@
-package com.wn.nlp.jlani;
+package com.wn.nlp.jlani.impl;
 
 import com.wn.nlp.jlani.value.Word;
 

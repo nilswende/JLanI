@@ -1,7 +1,5 @@
 package com.wn.nlp.jlani.impl;
 
-import com.wn.nlp.jlani.SentenceCleaner;
-
 import java.util.regex.Pattern;
 
 /**
