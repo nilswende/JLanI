@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Evaluates the score of words based on a given set of wordlists.
  */
-class Scoring {
+public class Scoring {
 	private static final double REMAINDER_BASE = 0.1;
 	private final Map<Language, WordList> wordLists;
 	

@@ -1,6 +1,5 @@
 package com.wn.nlp.jlani;
 
-import com.wn.nlp.jlani.impl.JLanIImpl;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ class JLanITest {
 		var wordLists = new WordLists();
 		wordLists.addWordList(DeserializedWordList.ofFile(Path.of("wordlists/de.ser.txt.gz")));
 		wordLists.addWordList(DeserializedWordList.ofFile(Path.of("wordlists/en.ser.txt.gz")));
-		var jLanI = new JLanIImpl(wordLists);
+		var jLanI = new JLanI(wordLists);
 		return jLanI.evaluate(request);
 	}
 	
@@ -73,7 +72,7 @@ class JLanITest {
 	
 	@Test
 	void evaluateDefault() {
-		var jLanI = new JLanIImpl();
+		var jLanI = new JLanI();
 		var actual = jLanI.evaluate(new Request("identifies the most likely language of an unknown text"));
 		assertEquals("en", actual.getMostLikelyResult().getKey().name());
 	}

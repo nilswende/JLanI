@@ -1,5 +1,6 @@
 package com.wn.nlp.jlani.impl;
 
+import com.wn.nlp.jlani.Blacklist;
 import com.wn.nlp.jlani.value.Word;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

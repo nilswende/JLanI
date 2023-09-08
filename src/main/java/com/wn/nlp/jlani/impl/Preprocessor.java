@@ -15,6 +15,12 @@ import java.util.regex.Pattern;
 public class Preprocessor {
 	private static final Pattern WORD_SEPARATOR = Pattern.compile("\\s+");
 	
+	/**
+	 * Preprocesses a sentence for language identification.
+	 *
+	 * @param request the request
+	 * @return the preprocessed list of words
+	 */
 	public List<Word> preprocessSentence(final Request request) {
 		var cleaner = RegexSentenceCleaner.ofRegex(Preferences.INSTANCE.get(Preferences.SPECIAL_CHARS));
 		var blacklist = InMemoryBlacklist.ofPath(Preferences.INSTANCE.get(Preferences.BLACKLIST_FILE));
