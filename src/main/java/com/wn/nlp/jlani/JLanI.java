@@ -1,15 +1,10 @@
 package com.wn.nlp.jlani;
 
-import com.wn.nlp.jlani.impl.InMemoryWordList;
 import com.wn.nlp.jlani.impl.Preprocessor;
 import com.wn.nlp.jlani.impl.Scoring;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,24 +21,7 @@ public class JLanI {
 	}
 	
 	public JLanI() {
-		this(createWordLists());
-	}
-	
-	private static WordLists createWordLists() {
-		var wordlistDirStr = Preferences.INSTANCE.get(Preferences.WORDLIST_DIR);
-		if (wordlistDirStr == null || wordlistDirStr.isBlank()) {
-			throw new IllegalArgumentException("%s needs to be set in the config file".formatted(Preferences.WORDLIST_DIR));
-		}
-		var wordlistDir = Path.of(wordlistDirStr);
-		if (Files.notExists(wordlistDir)) {
-			throw new IllegalArgumentException("Missing file: " + wordlistDir.toAbsolutePath());
-		}
-		try (var paths = Files.walk(wordlistDir)) {
-			var wordLists = paths.filter(Files::isRegularFile).map(InMemoryWordList::ofWordCountFile).toList();
-			return new WordLists(wordLists);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
+		this(WordLists.ofFiles());
 	}
 	
 	public Response evaluate(final Request request) {
