@@ -2,14 +2,16 @@
 Reimplementation of the venerable language identification tool [JLanI](https://toolbox.wortschatz.uni-leipzig.de/toolbox/textclassification/jlani).
 It identifies the most likely language of an unknown text.
 
-The languages available by default are German, English and French.
+JLanI by default uses the wordlist files contained in ``./resources/jlani/wordlists``.
+The included languages are German, English and French.
+
+Configuration is done via ``./config/jlani/lanikernel.ini``.
 
 Example:
 
 ````java
 import com.wn.nlp.jlani.Request;
 import com.wn.nlp.jlani.JLanI;
-import com.wn.nlp.jlani.impl.JLanIImpl;
 
 class Example {
 	public static void main(String[] args) {
@@ -48,4 +50,4 @@ class TextWordListCreator {
 }
 ````
 
-and drop it in ``resources/jlani/wordlists`` to be available on startup.
+and drop it in ``./resources/jlani/wordlists`` to be available on startup.
