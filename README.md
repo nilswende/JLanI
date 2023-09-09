@@ -52,3 +52,4 @@ class TextWordListCreator {
 and drop it in ``./resources/jlani/wordlists`` to be available on startup.
 
 A good starting point for corpora is the [Leipzig Corpora Collection](https://wortschatz.uni-leipzig.de/en/download).
+Use ``WortschatzWordListCreator`` for creating a wordlist from one of their word files.
