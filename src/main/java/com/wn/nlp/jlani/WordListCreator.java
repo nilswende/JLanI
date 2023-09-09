@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -32,13 +31,12 @@ public class WordListCreator {
 	}
 	
 	/**
-	 * Creates a wordlist from a given <a href="https://wortschatz.uni-leipzig.de">Wortschatz</a> word file.
+	 * Creates a wordlist from a given <a href="https://wortschatz.uni-leipzig.de/en/download">Wortschatz</a> word file.
 	 *
 	 * @param lineReader the source reader
 	 * @param writer     the destination writer
 	 */
 	public void createFromWortschatzWords(final LineNumberReader lineReader, final PrintWriter writer) throws IOException {
-		var anyLetter = Pattern.compile("\\p{Alpha}");
 		for (String line; (line = lineReader.readLine()) != null; ) {
 			if (line.isBlank()) continue;
 			var limit = 3;
@@ -47,14 +45,14 @@ public class WordListCreator {
 				var msg = "Illegal input format on line %d: %s".formatted(lineReader.getLineNumber(), line);
 				throw new IllegalArgumentException(msg);
 			}
+			var id = Integer.parseInt(split[0]);
+			if (id <= 100) continue; // skip special characters
 			var word = split[1];
 			var count = split[2];
-			if (anyLetter.matcher(word).find()) {
-				writer.print(count);
-				writer.print(' ');
-				writer.print(word);
-				writer.println();
-			}
+			writer.print(count);
+			writer.print(' ');
+			writer.print(word);
+			writer.println();
 		}
 	}
 }
