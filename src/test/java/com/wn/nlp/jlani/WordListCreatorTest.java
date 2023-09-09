@@ -17,7 +17,7 @@ class WordListCreatorTest {
 				""";
 		var stringWriter = new StringWriter();
 		try (var writer = new PrintWriter(stringWriter)) {
-			new WordListCreator().createFromText(new Request(text), writer);
+			new WordListCreator().createFromText(text, writer);
 		}
 		var expected = """
 				2 any

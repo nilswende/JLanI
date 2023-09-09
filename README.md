@@ -31,7 +31,6 @@ class Example {
 Create a wordlist from your own reference corpus:
 
 ````java
-import com.wn.nlp.jlani.Request;
 import com.wn.nlp.jlani.WordListCreator;
 import com.wn.nlp.jlani.util.IOUtil;
 
@@ -44,7 +43,7 @@ class TextWordListCreator {
 				any text representing the target language as best it can
 				""";
 		try (var writer = IOUtil.newFileWriter(Path.of("./lang.txt"), true)) {
-			new WordListCreator().createFromText(new Request(text), writer);
+			new WordListCreator().createFromText(text, writer);
 		}
 	}
 }

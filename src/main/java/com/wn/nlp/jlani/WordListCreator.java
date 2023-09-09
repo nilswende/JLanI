@@ -16,11 +16,11 @@ public class WordListCreator {
 	/**
 	 * Creates a wordlist from a given text.
 	 *
-	 * @param request the request containing the source text
-	 * @param writer  the destination writer
+	 * @param text   the source text
+	 * @param writer the destination writer
 	 */
-	public void createFromText(final Request request, final PrintWriter writer) {
-		var words = new Preprocessor().preprocessSentence(request);
+	public void createFromText(final String text, final PrintWriter writer) {
+		var words = new Preprocessor().preprocessSentence(new Request(text));
 		var wordCounts = words.stream().collect(Collectors.groupingBy(w -> w, LinkedHashMap::new, Collectors.counting()));
 		
 		for (final var entry : wordCounts.entrySet()) {
