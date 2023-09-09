@@ -1,4 +1,4 @@
-package com.wn.nlp.jlani.impl;
+package com.wn.nlp.jlani.preprocessing;
 
 import com.wn.nlp.jlani.Preferences;
 import com.wn.nlp.jlani.Request;

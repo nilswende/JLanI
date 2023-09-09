@@ -1,4 +1,4 @@
-package com.wn.nlp.jlani.impl;
+package com.wn.nlp.jlani.preprocessing;
 
 import java.util.regex.Pattern;
 

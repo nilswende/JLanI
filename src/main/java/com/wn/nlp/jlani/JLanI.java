@@ -1,7 +1,7 @@
 package com.wn.nlp.jlani;
 
-import com.wn.nlp.jlani.impl.Preprocessor;
 import com.wn.nlp.jlani.impl.Scoring;
+import com.wn.nlp.jlani.preprocessing.Preprocessor;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 import net.jcip.annotations.ThreadSafe;

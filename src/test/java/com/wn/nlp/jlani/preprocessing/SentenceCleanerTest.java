@@ -1,4 +1,4 @@
-package com.wn.nlp.jlani.impl;
+package com.wn.nlp.jlani.preprocessing;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,6 +1,6 @@
 package com.wn.nlp.jlani;
 
-import com.wn.nlp.jlani.impl.Preprocessor;
+import com.wn.nlp.jlani.preprocessing.Preprocessor;
 import com.wn.nlp.jlani.value.Word;
 
 import java.io.*;
