@@ -12,14 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class WordListsTest {
 	@Test
 	void testNoneAvailable() {
-		var wordLists = new WordLists();
+		var wordLists = new WordLists(List.of());
 		assertThrows(IllegalStateException.class, () -> wordLists.getEvaluatedWordLists(Set.of()));
 	}
 	
 	@Test
 	void testUnknownRequested() {
-		var wordLists = new WordLists();
-		wordLists.addWordList(new WordListTest.MockWordList("de"));
+		var wordLists = new WordLists(List.of(new WordListTest.MockWordList("de")));
 		assertThrows(IllegalArgumentException.class, () -> wordLists.getEvaluatedWordLists(Set.of(new Language("en"))));
 	}
 	

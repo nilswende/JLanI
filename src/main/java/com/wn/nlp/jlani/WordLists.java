@@ -2,6 +2,7 @@ package com.wn.nlp.jlani;
 
 import com.wn.nlp.jlani.impl.InMemoryWordList;
 import com.wn.nlp.jlani.value.Language;
+import net.jcip.annotations.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,15 +15,20 @@ import java.util.*;
 /**
  * Collection of available wordlists.
  */
+@ThreadSafe
 public class WordLists {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WordLists.class);
 	private final Map<Language, WordList> availableWordLists = new HashMap<>();
 	
-	public WordLists() {
-	}
-	
 	public WordLists(final List<WordList> wordLists) {
-		wordLists.forEach(this::addWordList);
+		Objects.requireNonNull(wordLists);
+		for (final var wordList : wordLists) {
+			Objects.requireNonNull(wordList);
+			if (availableWordLists.containsKey(wordList.getLanguage())) {
+				LOGGER.warn("Overwriting existing wordlist '{}'", wordList.getLanguage());
+			}
+			availableWordLists.put(wordList.getLanguage(), wordList);
+		}
 	}
 	
 	/**
@@ -43,19 +49,6 @@ public class WordLists {
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
-	}
-	
-	/**
-	 * Adds a wordlist to the collection.
-	 *
-	 * @param wordList the wordlist
-	 */
-	public void addWordList(final WordList wordList) {
-		Objects.requireNonNull(wordList);
-		if (availableWordLists.containsKey(wordList.getLanguage())) {
-			LOGGER.warn("Overwriting existing wordlist '{}'", wordList.getLanguage());
-		}
-		availableWordLists.put(wordList.getLanguage(), wordList);
 	}
 	
 	/**

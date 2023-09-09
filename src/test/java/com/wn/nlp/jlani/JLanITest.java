@@ -18,10 +18,9 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 class JLanITest {
 	
 	private Response evaluateDeserialized(final Request request) {
-		var wordLists = new WordLists();
-		wordLists.addWordList(DeserializedWordList.ofFile(Path.of("wordlists/de.ser.txt.gz")));
-		wordLists.addWordList(DeserializedWordList.ofFile(Path.of("wordlists/en.ser.txt.gz")));
-		var jLanI = new JLanI(wordLists);
+		var de = DeserializedWordList.ofFile(Path.of("wordlists/de.ser.txt.gz"));
+		var en = DeserializedWordList.ofFile(Path.of("wordlists/en.ser.txt.gz"));
+		var jLanI = new JLanI(new WordLists(List.of(de, en)));
 		return jLanI.evaluate(request);
 	}
 	

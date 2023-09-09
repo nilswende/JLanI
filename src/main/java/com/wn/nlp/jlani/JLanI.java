@@ -4,6 +4,7 @@ import com.wn.nlp.jlani.impl.Preprocessor;
 import com.wn.nlp.jlani.impl.Scoring;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
+import net.jcip.annotations.ThreadSafe;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Objects;
  * Java Language Identifier.<br>
  * Identifies the most likely language of an unknown text.
  */
+@ThreadSafe
 public class JLanI {
 	private final WordLists wordLists;
 	
