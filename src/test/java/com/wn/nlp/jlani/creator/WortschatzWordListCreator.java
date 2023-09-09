@@ -4,7 +4,6 @@ import com.wn.nlp.jlani.WordListCreator;
 import com.wn.nlp.jlani.util.IOUtil;
 
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,9 +19,9 @@ class WortschatzWordListCreator {
 		if (Files.notExists(source)) {
 			throw new IllegalArgumentException("Missing file: " + source.toAbsolutePath());
 		}
-		try (var lineReader = new LineNumberReader(IOUtil.newFileReader(source));
+		try (var reader = IOUtil.newFileReader(source);
 			 var writer = IOUtil.newFileWriter(destination, true)) {
-			new WordListCreator().createFromWortschatzWords(lineReader, writer);
+			new WordListCreator().createFromWortschatzWords(reader, writer);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}

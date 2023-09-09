@@ -3,7 +3,9 @@ package com.wn.nlp.jlani;
 import com.wn.nlp.jlani.util.IOUtil;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,9 +18,7 @@ class WordListCreatorTest {
 				any any text
 				""";
 		var stringWriter = new StringWriter();
-		try (var writer = new PrintWriter(stringWriter)) {
-			new WordListCreator().createFromText(text, writer);
-		}
+		new WordListCreator().createFromText(text, stringWriter);
 		var expected = """
 				2 any
 				1 text
@@ -29,9 +29,8 @@ class WordListCreatorTest {
 	@Test
 	void createFromWortschatzWords() {
 		var stringWriter = new StringWriter();
-		try (var lineReader = new LineNumberReader(IOUtil.newResourceReader(Path.of("en.ws.txt")));
-			 var writer = new PrintWriter(stringWriter)) {
-			new WordListCreator().createFromWortschatzWords(lineReader, writer);
+		try (var reader = IOUtil.newResourceReader(Path.of("en.ws.txt"))) {
+			new WordListCreator().createFromWortschatzWords(reader, stringWriter);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}

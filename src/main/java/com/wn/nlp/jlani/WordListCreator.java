@@ -1,11 +1,11 @@
 package com.wn.nlp.jlani;
 
 import com.wn.nlp.jlani.impl.Preprocessor;
+import com.wn.nlp.jlani.value.Word;
 
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -18,25 +18,35 @@ public class WordListCreator {
 	 * @param text   the source text
 	 * @param writer the destination writer
 	 */
-	public void createFromText(final String text, final PrintWriter writer) {
-		var words = new Preprocessor().preprocessSentence(new Request(text));
-		var wordCounts = words.stream().collect(Collectors.groupingBy(w -> w, LinkedHashMap::new, Collectors.counting()));
+	public void createFromText(final String text, final Writer writer) {
+		var words = new Preprocessor().preprocess(new Request(text));
+		var wordCounts = words.stream().map(Word::value)
+				.collect(Collectors.groupingBy(w -> w, LinkedHashMap::new, Collectors.counting()));
 		
+		printWordCounts(wordCounts, writer);
+	}
+	
+	private void printWordCounts(final Map<String, Long> wordCounts, final Writer writer) {
+		var printWriter = writer instanceof PrintWriter ? ((PrintWriter) writer) : new PrintWriter(writer);
 		for (final var entry : wordCounts.entrySet()) {
-			writer.print(entry.getValue());
-			writer.print(' ');
-			writer.print(entry.getKey().value());
-			writer.println();
+			printWriter.print(entry.getValue());
+			printWriter.print(' ');
+			printWriter.print(entry.getKey());
+			printWriter.println();
 		}
+		printWriter.flush();
 	}
 	
 	/**
 	 * Creates a wordlist from a given <a href="https://wortschatz.uni-leipzig.de/en/download">Wortschatz</a> word file.
 	 *
-	 * @param lineReader the source reader
-	 * @param writer     the destination writer
+	 * @param reader the source reader
+	 * @param writer the destination writer
 	 */
-	public void createFromWortschatzWords(final LineNumberReader lineReader, final PrintWriter writer) throws IOException {
+	public void createFromWortschatzWords(final Reader reader, final Writer writer) throws IOException {
+		var preprocessor = new Preprocessor();
+		var wordCounts = new LinkedHashMap<String, Long>();
+		var lineReader = new LineNumberReader(reader);
 		for (String line; (line = lineReader.readLine()) != null; ) {
 			if (line.isBlank()) continue;
 			var limit = 3;
@@ -47,12 +57,12 @@ public class WordListCreator {
 			}
 			var id = Integer.parseInt(split[0]);
 			if (id <= 100) continue; // skip special characters
-			var word = split[1];
-			var count = split[2];
-			writer.print(count);
-			writer.print(' ');
-			writer.print(word);
-			writer.println();
+			var word = preprocessor.preprocessWord(split[1]);
+			if (word == null) continue;
+			var count = Long.parseLong(split[2]);
+			wordCounts.merge(word.value(), count, Long::sum);
 		}
+		
+		printWordCounts(wordCounts, writer);
 	}
 }

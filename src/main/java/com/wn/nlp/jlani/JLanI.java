@@ -16,6 +16,7 @@ import java.util.Objects;
  */
 @ThreadSafe
 public class JLanI {
+	private final Preprocessor preprocessor = new Preprocessor();
 	private final WordLists wordLists;
 	
 	public JLanI(final WordLists wordLists) {
@@ -29,7 +30,7 @@ public class JLanI {
 	public Response evaluate(final Request request) {
 		Objects.requireNonNull(request);
 		var evaluatedWordLists = wordLists.getEvaluatedWordLists(request.getLanguages());
-		var sentence = new Preprocessor().preprocessSentence(request);
+		var sentence = preprocessor.preprocess(request);
 		
 		var response = new Response(evaluatedWordLists.keySet(), sentence.size());
 		

@@ -14,7 +14,7 @@ class PreprocessorTest {
 	void testSampling() {
 		var wordsToCheck = 5;
 		var request = new Request("JLanI identifies the most likely language of an unknown text", Set.of(), wordsToCheck);
-		var actual = new Preprocessor().preprocessSentence(request);
+		var actual = new Preprocessor().preprocess(request);
 		assertEquals(wordsToCheck, actual.size());
 		assertEquals("JLanI the likely of unknown", actual.stream().map(Word::value).collect(Collectors.joining(" ")));
 	}
@@ -23,7 +23,7 @@ class PreprocessorTest {
 	void testSamplingAll() {
 		var sentence = "JLanI identifies the most likely language of an unknown text";
 		var request = new Request(sentence, Set.of(), 20);
-		var actual = new Preprocessor().preprocessSentence(request);
+		var actual = new Preprocessor().preprocess(request);
 		assertEquals(10, actual.size());
 		assertEquals(sentence, actual.stream().map(Word::value).collect(Collectors.joining(" ")));
 	}
@@ -32,7 +32,7 @@ class PreprocessorTest {
 	void testSamplingNone() {
 		var sentence = "JLanI identifies the most likely language of an unknown text";
 		var request = new Request(sentence);
-		var actual = new Preprocessor().preprocessSentence(request);
+		var actual = new Preprocessor().preprocess(request);
 		assertEquals(10, actual.size());
 		assertEquals(sentence, actual.stream().map(Word::value).collect(Collectors.joining(" ")));
 	}
