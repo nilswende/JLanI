@@ -56,11 +56,8 @@ public class InMemoryWordList extends WordList {
 		if (Files.notExists(path)) {
 			throw new IllegalArgumentException("Missing file: " + path.toAbsolutePath());
 		}
-		var fileName = path.getFileName().toString();
-		var languageName = fileName.split("\\.")[0];
-		var language = new Language(languageName);
 		try (var reader = IOUtil.newFileReader(path)) {
-			return ofWordCountFileReader(reader, language);
+			return ofWordCountFileReader(reader, Language.ofPath(path));
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}

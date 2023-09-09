@@ -18,9 +18,7 @@ class DeserializedWordList {
 	 */
 	public static WordList ofFile(final Path path) {
 		try (var reader = IOUtil.newResourceReader(path)) {
-			var languageName = path.getFileName().toString().split("\\.")[0];
-			var language = new Language(languageName);
-			return ofFileReader(reader, language);
+			return ofFileReader(reader, Language.ofPath(path));
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
