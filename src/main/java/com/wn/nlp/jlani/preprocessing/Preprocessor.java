@@ -57,11 +57,11 @@ public class Preprocessor {
 		return word;
 	}
 	
-	private List<Word> sampleWords(final List<Word> splitSentence, final int wordsToCheck) {
-		var step = splitSentence.size() / wordsToCheck;
+	private List<Word> sampleWords(final List<Word> words, final int wordsToCheck) {
+		var step = words.size() / wordsToCheck;
 		var sample = new ArrayList<Word>();
-		for (int i = 0; i < splitSentence.size() && sample.size() < wordsToCheck; i += step) {
-			sample.add(splitSentence.get(i));
+		for (int i = 0; i < words.size() && sample.size() < wordsToCheck; i += step) {
+			sample.add(words.get(i));
 		}
 		return sample;
 	}
