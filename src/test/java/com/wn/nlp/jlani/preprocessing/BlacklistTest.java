@@ -1,5 +1,6 @@
 package com.wn.nlp.jlani.preprocessing;
 
+import com.wn.nlp.jlani.preprocessing.impl.InMemoryBlacklist;
 import com.wn.nlp.jlani.value.Word;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

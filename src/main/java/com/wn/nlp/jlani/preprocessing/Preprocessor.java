@@ -2,6 +2,8 @@ package com.wn.nlp.jlani.preprocessing;
 
 import com.wn.nlp.jlani.Preferences;
 import com.wn.nlp.jlani.Request;
+import com.wn.nlp.jlani.preprocessing.impl.InMemoryBlacklist;
+import com.wn.nlp.jlani.preprocessing.impl.RegexSentenceCleaner;
 import com.wn.nlp.jlani.value.Word;
 
 import java.text.Normalizer;

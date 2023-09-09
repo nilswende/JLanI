@@ -1,5 +1,6 @@
-package com.wn.nlp.jlani.preprocessing;
+package com.wn.nlp.jlani.preprocessing.impl;
 
+import com.wn.nlp.jlani.preprocessing.Blacklist;
 import com.wn.nlp.jlani.value.Word;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

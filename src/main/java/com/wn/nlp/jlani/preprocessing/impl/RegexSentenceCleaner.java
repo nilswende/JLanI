@@ -1,4 +1,6 @@
-package com.wn.nlp.jlani.preprocessing;
+package com.wn.nlp.jlani.preprocessing.impl;
+
+import com.wn.nlp.jlani.preprocessing.SentenceCleaner;
 
 import java.util.regex.Pattern;
 
