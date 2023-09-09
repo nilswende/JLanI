@@ -9,8 +9,8 @@ import java.util.*;
  * The response to a {@link Request} for language identification.
  */
 public class Response {
-	private final Map<Language, Result> results = new HashMap<>();
 	private final int checkedWords;
+	private final Map<Language, Result> results = new HashMap<>();
 	
 	public Response(final Set<Language> languages, final int checkedWords) {
 		this(checkedWords);
@@ -22,7 +22,7 @@ public class Response {
 		this.checkedWords = checkedWords;
 	}
 	
-	public Result createResult(final Language language) {
+	Result createResult(final Language language) {
 		var result = new Result();
 		results.put(language, result);
 		return result;
@@ -31,11 +31,14 @@ public class Response {
 	@Override
 	public String toString() {
 		return "Response{" +
-			   "results=" + results +
-			   ", checkedWords=" + checkedWords +
+			   "checkedWords=" + checkedWords +
+			   ", results=" + results +
 			   '}';
 	}
 	
+	/**
+	 * Returns the most likely Language and Result, i.e. with the highest score.
+	 */
 	public Map.Entry<Language, Result> getMostLikelyResult() {
 		return results.entrySet().stream()
 				.max(Map.Entry.comparingByValue())
@@ -61,11 +64,11 @@ public class Response {
 		private double score = 1.0;
 		private final List<Word> words = new ArrayList<>();
 		
-		public void addScore(final double score) {
+		void addScore(final double score) {
 			this.score *= score;
 		}
 		
-		public void addWord(final Word word) {
+		void addWord(final Word word) {
 			words.add(word);
 		}
 		
