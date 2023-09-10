@@ -12,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class WordListsTest {
 	@Test
 	void testNoneAvailable() {
-		var wordLists = new WordLists(List.of());
-		assertThrows(IllegalStateException.class, () -> wordLists.getEvaluatedWordLists(Set.of()));
+		assertThrows(IllegalStateException.class, () -> new WordLists(List.of()));
 	}
 	
 	@Test

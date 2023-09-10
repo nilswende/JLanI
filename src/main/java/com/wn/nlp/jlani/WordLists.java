@@ -27,6 +27,9 @@ public class WordLists {
 	 */
 	public WordLists(final List<WordList> wordLists) {
 		Objects.requireNonNull(wordLists);
+		if (wordLists.isEmpty()) {
+			throw new IllegalStateException("wordlists is empty");
+		}
 		for (final var wordList : wordLists) {
 			Objects.requireNonNull(wordList);
 			if (availableWordLists.containsKey(wordList.getLanguage())) {
@@ -50,8 +53,9 @@ public class WordLists {
 		}
 		try (var paths = Files.walk(wordlistDir)) {
 			var wordLists = paths.filter(Files::isRegularFile).map(InMemoryWordList::ofWordCountFile).toList();
-			if (wordLists.isEmpty())
+			if (wordLists.isEmpty()) {
 				throw new IllegalArgumentException("No wordlists provided in " + wordlistDir.toAbsolutePath());
+			}
 			return new WordLists(wordLists);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
@@ -65,9 +69,6 @@ public class WordLists {
 	 */
 	public Map<Language, WordList> getEvaluatedWordLists(final Set<Language> requestedLanguages) {
 		Objects.requireNonNull(requestedLanguages);
-		if (availableWordLists.isEmpty()) {
-			throw new IllegalStateException("No wordlists available");
-		}
 		var availableLanguages = availableWordLists.keySet();
 		if (!availableLanguages.containsAll(requestedLanguages)) {
 			var unknown = new HashSet<>(requestedLanguages).removeAll(availableLanguages);
