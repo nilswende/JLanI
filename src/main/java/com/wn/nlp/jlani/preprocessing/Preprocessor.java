@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import static com.wn.nlp.jlani.Preferences.Key.BLACKLIST_FILE;
+import static com.wn.nlp.jlani.Preferences.Key.SPECIAL_CHARS;
+
 /**
  * Preprocesses a sentence for language identification.
  */
@@ -20,8 +23,8 @@ public class Preprocessor {
 	private static final Pattern WORD_SEPARATOR = Pattern.compile("\\s+");
 	private static final Pattern NUMBER = Pattern.compile("\\d+");
 	private static final Normalizer.Form FORM = Normalizer.Form.NFKD;
-	private final Cleaner cleaner = RegexCleaner.ofRegex(Preferences.INSTANCE.get(Preferences.SPECIAL_CHARS));
-	private final Blacklist blacklist = InMemoryBlacklist.ofPath(Preferences.INSTANCE.get(Preferences.BLACKLIST_FILE));
+	private final Cleaner cleaner = RegexCleaner.ofRegex(Preferences.INSTANCE.get(SPECIAL_CHARS));
+	private final Blacklist blacklist = InMemoryBlacklist.ofPath(Preferences.INSTANCE.get(BLACKLIST_FILE));
 	
 	/**
 	 * Preprocesses a sentence for language identification.

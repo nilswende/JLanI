@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+import static com.wn.nlp.jlani.Preferences.Key.WORDLIST_DIR;
+
 /**
  * Collection of available wordlists.
  */
@@ -38,9 +40,9 @@ public class WordLists {
 	 * Creates wordlists from the configured directory.
 	 */
 	public static WordLists ofFiles() {
-		var wordlistDirStr = Preferences.INSTANCE.get(Preferences.WORDLIST_DIR);
+		var wordlistDirStr = Preferences.INSTANCE.get(WORDLIST_DIR);
 		if (wordlistDirStr == null || wordlistDirStr.isBlank()) {
-			throw new IllegalArgumentException("%s needs to be set in the config file".formatted(Preferences.WORDLIST_DIR));
+			throw new IllegalArgumentException("%s needs to be set in the config file".formatted(WORDLIST_DIR));
 		}
 		var wordlistDir = Path.of(wordlistDirStr);
 		if (!Files.isDirectory(wordlistDir)) {

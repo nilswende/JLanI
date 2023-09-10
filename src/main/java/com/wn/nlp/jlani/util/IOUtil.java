@@ -49,4 +49,8 @@ public final class IOUtil {
 	public static GZIPInputStream newGZIPInputStream(final InputStream in) throws IOException {
 		return new GZIPInputStream(in, DEFAULT_BUFFER_SIZE);
 	}
+	
+	public static boolean resourceExists(final Path path) {
+		return IOUtil.class.getClassLoader().getResource(path.toString()) != null;
+	}
 }

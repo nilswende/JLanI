@@ -5,8 +5,6 @@ It identifies the most likely language of an unknown text.
 JLanI by default uses the wordlist files contained in ``./resources/jlani/wordlists``.
 The included languages are English, French, German, Mandalorian and Spanish.
 
-Configuration is done via ``./config/jlani/lanikernel.ini``.
-
 Example:
 
 ````java
@@ -88,6 +86,14 @@ class ResourcesExample {
 	}
 }
 ````
+
+## Configuration
+
+There are three ways to configure JLanI:
+
+- Edit the resources file ``src/main/resources/config/jlani/lanikernel.ini``.
+- Create the external file ``./config/jlani/lanikernel.ini``. If it exists, it takes precedence over the resources file.
+- Set the configuration programmatically via the ``Preferences`` class.
 
 ## Changes from the original
 
