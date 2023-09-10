@@ -18,7 +18,7 @@ import static com.wn.nlp.jlani.Preferences.Key.BLACKLIST_FILE;
 import static com.wn.nlp.jlani.Preferences.Key.SPECIAL_CHARS;
 
 /**
- * Preprocesses a sentence for language identification.
+ * Preprocesses strings for language identification.
  */
 @Immutable
 public class Preprocessor {
@@ -35,7 +35,7 @@ public class Preprocessor {
 	 * @return the preprocessed list of words
 	 */
 	public List<Word> preprocess(final Request request) {
-		final String sentence = request.getSentence();
+		final var sentence = request.getSentence();
 		
 		var wordStrings = Arrays.asList(WORD_SEPARATOR.split(sentence));
 		var words = wordStrings.stream()
@@ -50,7 +50,7 @@ public class Preprocessor {
 	 * Preprocesses a word for language identification.
 	 *
 	 * @param wordStr the word string
-	 * @return the word or null, if it is filtered
+	 * @return the word or null, if it was filtered
 	 */
 	public Word preprocessWord(final String wordStr) {
 		var normalizedWord = Normalizer.isNormalized(wordStr, FORM) ? wordStr : Normalizer.normalize(wordStr, FORM);

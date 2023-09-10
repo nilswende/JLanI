@@ -33,28 +33,28 @@ public class JLanI {
 	public Response evaluate(final Request request) {
 		Objects.requireNonNull(request);
 		var evaluatedWordLists = wordLists.getEvaluatedWordLists(request.getLanguages());
-		var sentence = preprocessor.preprocess(request);
+		var words = preprocessor.preprocess(request);
 		
-		var response = new Response(evaluatedWordLists.keySet(), sentence.size());
+		var response = new Response(evaluatedWordLists.keySet(), words.size());
 		
-		evaluateScore(evaluatedWordLists, sentence, response);
-		evaluateWords(evaluatedWordLists, sentence, response);
+		evaluateScore(evaluatedWordLists, words, response);
+		evaluateWords(evaluatedWordLists, words, response);
 		
 		return response;
 	}
 	
-	private void evaluateScore(final Map<Language, WordList> evaluatedWordLists, final List<Word> sentence, final Response response) {
+	private void evaluateScore(final Map<Language, WordList> evaluatedWordLists, final List<Word> words, final Response response) {
 		var scoring = new Scoring(evaluatedWordLists);
-		for (final var word : sentence) {
+		for (final var word : words) {
 			var scores = scoring.evaluate(word);
 			scores.forEach((language, score) -> response.getResult(language).addScore(score));
 		}
 	}
 	
-	private void evaluateWords(final Map<Language, WordList> evaluatedWordLists, final List<Word> sentence, final Response response) {
+	private void evaluateWords(final Map<Language, WordList> evaluatedWordLists, final List<Word> words, final Response response) {
 		evaluatedWordLists.forEach((language, wordList) -> {
 			var result = response.getResult(language);
-			sentence.stream().filter(wordList::containsWord).forEach(result::addWord);
+			words.stream().filter(wordList::containsWord).forEach(result::addWord);
 		});
 	}
 }
