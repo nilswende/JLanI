@@ -95,6 +95,8 @@ There are three ways to configure JLanI:
 - Create the external file ``./config/jlani/lanikernel.ini``. If it exists, it takes precedence over the resources file.
 - Set the configuration programmatically via the ``Preferences`` class.
 
+Any changes are applied only to new ``JLanI`` instances.
+
 ## Changes from the original
 
 - Preprocessing:
