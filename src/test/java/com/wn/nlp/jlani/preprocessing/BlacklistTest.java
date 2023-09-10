@@ -1,6 +1,6 @@
 package com.wn.nlp.jlani.preprocessing;
 
-import com.wn.nlp.jlani.preprocessing.impl.InMemoryBlacklist;
+import com.wn.nlp.jlani.preprocessing.impl.SimpleBlacklist;
 import com.wn.nlp.jlani.value.Word;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,9 +19,9 @@ class BlacklistTest {
 	@ParameterizedTest
 	@MethodSource
 	void test(final String  blacklistStr, final String input, final String expected) {
-		var blacklist = InMemoryBlacklist.ofReader(new StringReader(blacklistStr));
+		var blacklist = SimpleBlacklist.ofReader(new StringReader(blacklistStr));
 		var actual = Arrays.stream(input.split(" "))
-				.filter(s -> !blacklist.isBlacklisted(new Word(s)))
+				.filter(s -> !blacklist.contains(new Word(s)))
 				.collect(Collectors.joining(" "));
 		assertEquals(expected, actual);
 	}
@@ -43,23 +43,23 @@ class BlacklistTest {
 	
 	@Test
 	void testMissingProperty() {
-		assertNotNull(InMemoryBlacklist.ofPath(null));
+		assertNotNull(SimpleBlacklist.ofPath(null));
 	}
 	
 	@Test
 	void testBlankProperty() {
-		assertNotNull(InMemoryBlacklist.ofPath(" "));
+		assertNotNull(SimpleBlacklist.ofPath(" "));
 	}
 	
 	@Test
 	void testMissingFile() {
-		assertNotNull(InMemoryBlacklist.ofPath("./missing.txt"));
+		assertNotNull(SimpleBlacklist.ofPath("./missing.txt"));
 	}
 	
 	@Test
 	void testFile() {
-		var actual = InMemoryBlacklist.ofPath("./src/test/resources/blacklist.txt");
+		var actual = SimpleBlacklist.ofPath("./src/test/resources/blacklist.txt");
 		assertNotNull(actual);
-		assertTrue(actual.isBlacklisted(new Word("list")));
+		assertTrue(actual.contains(new Word("list")));
 	}
 }

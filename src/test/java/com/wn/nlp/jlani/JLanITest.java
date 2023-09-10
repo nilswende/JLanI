@@ -1,6 +1,7 @@
 package com.wn.nlp.jlani;
 
-import com.wn.nlp.jlani.impl.InMemoryWordList;
+import com.wn.nlp.jlani.impl.DeserializedWordList;
+import com.wn.nlp.jlani.impl.SimpleWordList;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 import org.junit.jupiter.api.Test;
@@ -88,7 +89,7 @@ class JLanITest {
 		var stringWriter = new StringWriter();
 		new WordListCreator().createFromText(composed, stringWriter);
 		// create wordlist from wordlist file
-		var wordList = InMemoryWordList.ofWordCountFileReader(new StringReader(stringWriter.toString()), new Language("lang"));
+		var wordList = SimpleWordList.ofWordlistFileReader(new StringReader(stringWriter.toString()), new Language("lang"));
 		// evaluate
 		var jLanI = new JLanI(new WordLists(List.of(wordList)));
 		var actual = jLanI.evaluate(new Request(decomposed));

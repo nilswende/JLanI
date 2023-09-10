@@ -1,6 +1,6 @@
 package com.wn.nlp.jlani;
 
-import com.wn.nlp.jlani.impl.InMemoryWordList;
+import com.wn.nlp.jlani.impl.SimpleWordList;
 import com.wn.nlp.jlani.value.Language;
 import net.jcip.annotations.Immutable;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class WordLists {
 			throw new IllegalArgumentException("Missing directory: " + wordlistDir.toAbsolutePath());
 		}
 		try (var paths = Files.walk(wordlistDir)) {
-			var wordLists = paths.filter(Files::isRegularFile).map(InMemoryWordList::ofWordCountFile).toList();
+			var wordLists = paths.filter(Files::isRegularFile).map(SimpleWordList::ofWordlistFile).toList();
 			if (wordLists.isEmpty()) {
 				throw new IllegalArgumentException("No wordlists provided in " + wordlistDir.toAbsolutePath());
 			}

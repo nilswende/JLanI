@@ -12,11 +12,11 @@ public interface Blacklist {
 	 * @param word the word
 	 * @return true, if the word is unwanted
 	 */
-	boolean isBlacklisted(Word word);
+	boolean contains(Word word);
 	
 	class NullBlacklist implements Blacklist {
 		@Override
-		public boolean isBlacklisted(final Word word) {
+		public boolean contains(final Word word) {
 			return false;
 		}
 	}

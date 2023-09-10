@@ -2,8 +2,8 @@ package com.wn.nlp.jlani.preprocessing;
 
 import com.wn.nlp.jlani.Preferences;
 import com.wn.nlp.jlani.Request;
-import com.wn.nlp.jlani.preprocessing.impl.InMemoryBlacklist;
 import com.wn.nlp.jlani.preprocessing.impl.RegexCleaner;
+import com.wn.nlp.jlani.preprocessing.impl.SimpleBlacklist;
 import com.wn.nlp.jlani.value.Word;
 import net.jcip.annotations.Immutable;
 
@@ -26,7 +26,7 @@ public class Preprocessor {
 	private static final Pattern NUMBER = Pattern.compile("\\d+");
 	private static final Normalizer.Form FORM = Normalizer.Form.NFKC;
 	private final Cleaner cleaner = RegexCleaner.ofRegex(Preferences.INSTANCE.get(SPECIAL_CHARS));
-	private final Blacklist blacklist = InMemoryBlacklist.ofPath(Preferences.INSTANCE.get(BLACKLIST_FILE));
+	private final Blacklist blacklist = SimpleBlacklist.ofPath(Preferences.INSTANCE.get(BLACKLIST_FILE));
 	
 	/**
 	 * Preprocesses a sentence for language identification.
@@ -58,7 +58,7 @@ public class Preprocessor {
 		if (cleanedWord.isEmpty()) return null;
 		if (NUMBER.matcher(cleanedWord).matches()) return null;
 		var word = new Word(cleanedWord);
-		if (blacklist.isBlacklisted(word)) return null;
+		if (blacklist.contains(word)) return null;
 		return word;
 	}
 	

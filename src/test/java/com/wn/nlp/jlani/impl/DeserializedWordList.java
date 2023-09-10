@@ -1,6 +1,6 @@
-package com.wn.nlp.jlani;
+package com.wn.nlp.jlani.impl;
 
-import com.wn.nlp.jlani.impl.InMemoryWordList;
+import com.wn.nlp.jlani.WordList;
 import com.wn.nlp.jlani.util.IOUtil;
 import com.wn.nlp.jlani.value.Language;
 
@@ -9,7 +9,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
-class DeserializedWordList {
+public class DeserializedWordList {
 	/**
 	 * Creates a new WordList from a deserialized wordlist file dump.<br>
 	 * The file format is: {@code (<hex> <word>)*}
@@ -32,7 +32,7 @@ class DeserializedWordList {
 	 * @param language the language of the wordlist file
 	 */
 	public static WordList ofFileReader(final Reader reader, final Language language) {
-		var map = InMemoryWordList.ofReader(reader, s -> Double.longBitsToDouble(Long.parseUnsignedLong(s, 16)));
-		return new InMemoryWordList(map, language);
+		var map = SimpleWordList.ofReader(reader, s -> Double.longBitsToDouble(Long.parseUnsignedLong(s, 16)));
+		return new SimpleWordList(map, language);
 	}
 }

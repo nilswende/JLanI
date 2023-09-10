@@ -3,7 +3,7 @@ package example;
 import com.wn.nlp.jlani.JLanI;
 import com.wn.nlp.jlani.WordList;
 import com.wn.nlp.jlani.WordLists;
-import com.wn.nlp.jlani.impl.InMemoryWordList;
+import com.wn.nlp.jlani.impl.SimpleWordList;
 import com.wn.nlp.jlani.util.IOUtil;
 import com.wn.nlp.jlani.value.Language;
 
@@ -23,7 +23,7 @@ class ResourcesExample {
 	private static WordList wordListOfResource(final String name) throws IOException {
 		var path = Path.of(name);
 		try (var reader = IOUtil.newResourceReader(path)) {
-			return InMemoryWordList.ofWordCountFileReader(reader, Language.ofPath(path));
+			return SimpleWordList.ofWordlistFileReader(reader, Language.ofPath(path));
 		}
 	}
 }

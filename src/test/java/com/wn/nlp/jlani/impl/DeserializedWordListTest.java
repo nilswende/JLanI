@@ -1,7 +1,8 @@
-package com.wn.nlp.jlani;
+package com.wn.nlp.jlani.impl;
 
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -13,7 +14,7 @@ class DeserializedWordListTest {
 	void testSerializedFile() {
 		var path = Path.of("wordlists/de.ser.txt.gz");
 		var wordList = DeserializedWordList.ofFile(path);
-		assertEquals(wordList.getLanguage(), new Language("de"));
+		Assertions.assertEquals(wordList.getLanguage(), new Language("de"));
 		assertTrue(wordList.getLikelihood(new Word("Rat")) > 0);
 		assertNull(wordList.getLikelihood(new Word("Maus")));
 	}

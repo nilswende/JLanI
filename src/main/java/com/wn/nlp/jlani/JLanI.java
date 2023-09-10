@@ -20,12 +20,15 @@ public class JLanI {
 	private final WordLists wordLists;
 	
 	/**
-	 * Instances of this class are immutable if the supplied {@link WordLists} instance is.
+	 * Instances created by this constructor are immutable if the supplied {@link WordLists} instance is.
 	 */
 	public JLanI(final WordLists wordLists) {
 		this.wordLists = Objects.requireNonNull(wordLists);
 	}
 	
+	/**
+	 * Creates an immutable instance.
+	 */
 	public JLanI() {
 		this(WordLists.ofFiles());
 	}

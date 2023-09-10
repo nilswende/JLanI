@@ -18,18 +18,18 @@ import java.util.Objects;
 import java.util.function.ToDoubleFunction;
 
 /**
- * Maps words of a language to their likelihood using an in-memory word list.
+ * Maps words of a language to their likelihood.
  */
 @Immutable
-public class InMemoryWordList extends WordList {
+public class SimpleWordList extends WordList {
 	private final Map<Word, Double> wordlist;
 	
-	public InMemoryWordList(final Map<Word, Double> wordlist, final Language language) {
+	SimpleWordList(final Map<Word, Double> wordlist, final Language language) {
 		super(language);
 		this.wordlist = Objects.requireNonNull(wordlist);
 	}
 	
-	public static Map<Word, Double> ofReader(final Reader reader, final ToDoubleFunction<String> transform) {
+	static Map<Word, Double> ofReader(final Reader reader, final ToDoubleFunction<String> transform) {
 		var map = new HashMap<Word, Double>();
 		try (var lineReader = new LineNumberReader(reader)) {
 			for (String line; (line = lineReader.readLine()) != null; ) {
@@ -49,36 +49,36 @@ public class InMemoryWordList extends WordList {
 	}
 	
 	/**
-	 * Creates a new WordList from a wordlist file containing word counts.<br>
+	 * Creates an immutable WordList from a wordlist file containing word counts.<br>
 	 * The file format is: {@code (<int> <word>)*}
 	 *
 	 * @param path Path to the wordlist file. Its name is expected to be the language name, e.g. {@code en.txt.gz}.
 	 */
-	public static WordList ofWordCountFile(final Path path) {
+	public static WordList ofWordlistFile(final Path path) {
 		if (Files.notExists(path)) {
 			throw new IllegalArgumentException("Missing file: " + path.toAbsolutePath());
 		}
 		try (var reader = IOUtil.newFileReader(path)) {
-			return ofWordCountFileReader(reader, Language.ofPath(path));
+			return ofWordlistFileReader(reader, Language.ofPath(path));
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
 	}
 	
 	/**
-	 * Creates a new WordList from a wordlist file containing word counts.<br>
+	 * Creates an immutable WordList from a wordlist file containing word counts.<br>
 	 * The file format is: {@code (<int> <word>)*}
 	 *
 	 * @param reader   the content of the wordlist file
 	 * @param language the language of the wordlist file
 	 */
-	public static WordList ofWordCountFileReader(final Reader reader, final Language language) {
+	public static WordList ofWordlistFileReader(final Reader reader, final Language language) {
 		var map = ofReader(reader, Integer::parseInt);
 		if (map.values().stream().anyMatch(d -> d < 1)) {
 			throw new IllegalArgumentException("any word count must be 1 or higher");
 		}
 		normalize(map);
-		return new InMemoryWordList(map, language);
+		return new SimpleWordList(map, language);
 	}
 	
 	private static void normalize(final Map<?, Double> map) {

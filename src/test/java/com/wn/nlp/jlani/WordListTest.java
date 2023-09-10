@@ -1,6 +1,7 @@
 package com.wn.nlp.jlani;
 
-import com.wn.nlp.jlani.impl.InMemoryWordList;
+import com.wn.nlp.jlani.impl.DeserializedWordList;
+import com.wn.nlp.jlani.impl.SimpleWordList;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
 import org.junit.jupiter.api.Test;
@@ -48,13 +49,13 @@ class WordListTest {
 		String wordlistStr = """
 				-2 Rat
 				""";
-		assertThrows(IllegalArgumentException.class, () -> InMemoryWordList.ofWordCountFileReader(new StringReader(wordlistStr), new Language("de")));
+		assertThrows(IllegalArgumentException.class, () -> SimpleWordList.ofWordlistFileReader(new StringReader(wordlistStr), new Language("de")));
 	}
 	
 	@Test
 	void testWordCountFile() {
 		var path = Path.of("./src/test/resources/en.txt");
-		var wordList = InMemoryWordList.ofWordCountFile(path);
+		var wordList = SimpleWordList.ofWordlistFile(path);
 		assertEquals(wordList.getLanguage(), new Language("en"));
 		assertEquals(0.5, wordList.getLikelihood(new Word("prepare")));
 		assertNull(wordList.getLikelihood(new Word("full")));
@@ -63,7 +64,7 @@ class WordListTest {
 	@Test
 	void testMissingWordCountFile() {
 		var path = Path.of("./resources/wordlists/missing.txt");
-		assertThrows(IllegalArgumentException.class, () -> InMemoryWordList.ofWordCountFile(path));
+		assertThrows(IllegalArgumentException.class, () -> SimpleWordList.ofWordlistFile(path));
 	}
 	
 	static class MockWordList extends WordList {

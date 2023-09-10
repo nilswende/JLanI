@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Flags words as unwanted using an in-memory blacklist.
+ * Flags words as unwanted.
  */
-public class InMemoryBlacklist implements Blacklist {
-	private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryBlacklist.class);
+public class SimpleBlacklist implements Blacklist {
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleBlacklist.class);
 	private final Set<Word> blacklist;
 	
-	private InMemoryBlacklist(final Set<Word> blacklist) {
+	private SimpleBlacklist(final Set<Word> blacklist) {
 		this.blacklist = blacklist;
 	}
 	
@@ -61,11 +61,11 @@ public class InMemoryBlacklist implements Blacklist {
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
-		return new InMemoryBlacklist(set);
+		return new SimpleBlacklist(set);
 	}
 	
 	@Override
-	public boolean isBlacklisted(final Word word) {
+	public boolean contains(final Word word) {
 		return blacklist.contains(word);
 	}
 }
