@@ -4,7 +4,7 @@ import com.wn.nlp.jlani.impl.Scoring;
 import com.wn.nlp.jlani.preprocessing.Preprocessor;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.Immutable;
 
 import java.util.List;
 import java.util.Map;
@@ -14,13 +14,13 @@ import java.util.Objects;
  * Java Language Identifier.<br>
  * Identifies the most likely language of an unknown text.
  */
-@ThreadSafe
+@Immutable
 public class JLanI {
 	private final Preprocessor preprocessor = new Preprocessor();
 	private final WordLists wordLists;
 	
 	/**
-	 * Instances of this class are threadsafe iff the supplied {@link WordLists} instance is.
+	 * Instances of this class are immutable if the supplied {@link WordLists} instance is.
 	 */
 	public JLanI(final WordLists wordLists) {
 		this.wordLists = Objects.requireNonNull(wordLists);

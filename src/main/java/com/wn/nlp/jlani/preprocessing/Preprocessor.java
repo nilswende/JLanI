@@ -5,6 +5,7 @@ import com.wn.nlp.jlani.Request;
 import com.wn.nlp.jlani.preprocessing.impl.InMemoryBlacklist;
 import com.wn.nlp.jlani.preprocessing.impl.RegexCleaner;
 import com.wn.nlp.jlani.value.Word;
+import net.jcip.annotations.Immutable;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import static com.wn.nlp.jlani.Preferences.Key.SPECIAL_CHARS;
 /**
  * Preprocesses a sentence for language identification.
  */
+@Immutable
 public class Preprocessor {
 	private static final Pattern WORD_SEPARATOR = Pattern.compile("\\s+");
 	private static final Pattern NUMBER = Pattern.compile("\\d+");

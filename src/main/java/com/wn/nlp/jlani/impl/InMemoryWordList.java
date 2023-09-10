@@ -4,7 +4,7 @@ import com.wn.nlp.jlani.WordList;
 import com.wn.nlp.jlani.util.IOUtil;
 import com.wn.nlp.jlani.value.Language;
 import com.wn.nlp.jlani.value.Word;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.Immutable;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -20,7 +20,7 @@ import java.util.function.ToDoubleFunction;
 /**
  * Maps words of a language to their likelihood using an in-memory word list.
  */
-@ThreadSafe
+@Immutable
 public class InMemoryWordList extends WordList {
 	private final Map<Word, Double> wordlist;
 	

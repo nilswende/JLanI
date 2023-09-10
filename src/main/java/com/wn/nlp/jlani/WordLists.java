@@ -2,7 +2,7 @@ package com.wn.nlp.jlani;
 
 import com.wn.nlp.jlani.impl.InMemoryWordList;
 import com.wn.nlp.jlani.value.Language;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,13 +17,13 @@ import static com.wn.nlp.jlani.Preferences.Key.WORDLIST_DIR;
 /**
  * Collection of available wordlists.
  */
-@ThreadSafe
+@Immutable
 public class WordLists {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WordLists.class);
 	private final Map<Language, WordList> availableWordLists = new HashMap<>();
 	
 	/**
-	 * Instances of this class are threadsafe iff the supplied {@link WordList} instances are.
+	 * Instances of this class are immutable if the supplied {@link WordList} instances are.
 	 */
 	public WordLists(final List<WordList> wordLists) {
 		Objects.requireNonNull(wordLists);
