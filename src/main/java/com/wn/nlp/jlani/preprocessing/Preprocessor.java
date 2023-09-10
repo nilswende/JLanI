@@ -22,7 +22,7 @@ import static com.wn.nlp.jlani.Preferences.Key.SPECIAL_CHARS;
 public class Preprocessor {
 	private static final Pattern WORD_SEPARATOR = Pattern.compile("\\s+");
 	private static final Pattern NUMBER = Pattern.compile("\\d+");
-	private static final Normalizer.Form FORM = Normalizer.Form.NFKD;
+	private static final Normalizer.Form FORM = Normalizer.Form.NFKC;
 	private final Cleaner cleaner = RegexCleaner.ofRegex(Preferences.INSTANCE.get(SPECIAL_CHARS));
 	private final Blacklist blacklist = InMemoryBlacklist.ofPath(Preferences.INSTANCE.get(BLACKLIST_FILE));
 	
