@@ -4,11 +4,12 @@ import com.wn.nlp.jlani.WordListCreator;
 import com.wn.nlp.jlani.util.IOUtil;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-class WortschatzWordListCreator {
+class TextFileWordListCreator {
 	public static void main(String[] args) {
 		for (int i = 0; i < args.length; i += 2) {
 			create(Path.of(args[i]), Path.of(args[i + 1]));
@@ -21,7 +22,9 @@ class WortschatzWordListCreator {
 		}
 		try (var reader = IOUtil.newFileReader(source);
 			 var writer = IOUtil.newFileWriter(destination, true)) {
-			new WordListCreator().createFromWortschatzWords(reader, writer);
+			var stringWriter = new StringWriter();
+			reader.transferTo(stringWriter);
+			new WordListCreator().createFromText(stringWriter.toString(), writer);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
