@@ -19,6 +19,9 @@ public class JLanI {
 	private final Preprocessor preprocessor = new Preprocessor();
 	private final WordLists wordLists;
 	
+	/**
+	 * Instances of this class are threadsafe iff the supplied {@link WordLists} instance is.
+	 */
 	public JLanI(final WordLists wordLists) {
 		this.wordLists = Objects.requireNonNull(wordLists);
 	}

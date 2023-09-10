@@ -20,6 +20,9 @@ public class WordLists {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WordLists.class);
 	private final Map<Language, WordList> availableWordLists = new HashMap<>();
 	
+	/**
+	 * Instances of this class are threadsafe iff the supplied {@link WordList} instances are.
+	 */
 	public WordLists(final List<WordList> wordLists) {
 		Objects.requireNonNull(wordLists);
 		for (final var wordList : wordLists) {
