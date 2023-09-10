@@ -3,7 +3,7 @@ Reimplementation of the venerable language identification tool [JLanI](https://t
 It identifies the most likely language of an unknown text.
 
 JLanI by default uses the wordlist files contained in ``./resources/jlani/wordlists``.
-The included languages are English, French, German, Mandalorian and Spanish.
+The included languages are Chinese, English, French, German, Korean, Japanese, Mandalorian and Spanish.
 
 Example:
 
@@ -50,7 +50,7 @@ class TextWordListCreator {
 and drop it in ``./resources/jlani/wordlists`` to be available on startup.
 
 A good starting point for corpora is the [Leipzig Corpora Collection](https://wortschatz.uni-leipzig.de/en/download).
-Use ``WortschatzWordListCreator`` for creating a wordlist from one of their word files.
+Use ``WortschatzWordListCreator`` to create a wordlist from one of their word files.
 
 ## Using resources
 
@@ -99,7 +99,7 @@ There are three ways to configure JLanI:
 
 - Preprocessing:
   - Splits words on any whitespace of any length
-  - Performs [Unicode normalization](https://docs.oracle.com/javase/tutorial/i18n/text/normalizerapi.html)
+  - Performs [Unicode normalization](https://docs.oracle.com/javase/tutorial/i18n/text/normalizerapi.html) to NFKC
   - Removes numbers
   - Removes empty strings
   - Samples from the whole input text instead of sampling the first ``n`` words
