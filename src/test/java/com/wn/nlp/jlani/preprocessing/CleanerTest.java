@@ -1,6 +1,6 @@
 package com.wn.nlp.jlani.preprocessing;
 
-import com.wn.nlp.jlani.preprocessing.impl.RegexSentenceCleaner;
+import com.wn.nlp.jlani.preprocessing.impl.RegexCleaner;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -11,11 +11,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-class SentenceCleanerTest {
+class CleanerTest {
 	@ParameterizedTest
 	@MethodSource
-	void test(final CharSequence input, final String expected) {
-		final var actual = RegexSentenceCleaner.ofRegex("[,\\?]").apply(input);
+	void test(final String input, final String expected) {
+		final var actual = RegexCleaner.ofRegex("[,\\?]").apply(input);
 		assertEquals(expected, actual);
 	}
 	
@@ -31,7 +31,7 @@ class SentenceCleanerTest {
 	@Test
 	void testEmpty() {
 		var string = "in, put";
-		final var actual = RegexSentenceCleaner.ofRegex("").apply(string);
+		final var actual = RegexCleaner.ofRegex("").apply(string);
 		assertEquals(string, actual);
 	}
 }

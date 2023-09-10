@@ -3,7 +3,7 @@ package com.wn.nlp.jlani.preprocessing;
 import com.wn.nlp.jlani.Preferences;
 import com.wn.nlp.jlani.Request;
 import com.wn.nlp.jlani.preprocessing.impl.InMemoryBlacklist;
-import com.wn.nlp.jlani.preprocessing.impl.RegexSentenceCleaner;
+import com.wn.nlp.jlani.preprocessing.impl.RegexCleaner;
 import com.wn.nlp.jlani.value.Word;
 
 import java.text.Normalizer;
@@ -20,7 +20,7 @@ public class Preprocessor {
 	private static final Pattern WORD_SEPARATOR = Pattern.compile("\\s+");
 	private static final Pattern NUMBER = Pattern.compile("\\d+");
 	private static final Normalizer.Form FORM = Normalizer.Form.NFKD;
-	private final SentenceCleaner cleaner = RegexSentenceCleaner.ofRegex(Preferences.INSTANCE.get(Preferences.SPECIAL_CHARS));
+	private final Cleaner cleaner = RegexCleaner.ofRegex(Preferences.INSTANCE.get(Preferences.SPECIAL_CHARS));
 	private final Blacklist blacklist = InMemoryBlacklist.ofPath(Preferences.INSTANCE.get(Preferences.BLACKLIST_FILE));
 	
 	/**
