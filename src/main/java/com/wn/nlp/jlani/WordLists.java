@@ -50,6 +50,8 @@ public class WordLists {
 		}
 		try (var paths = Files.walk(wordlistDir)) {
 			var wordLists = paths.filter(Files::isRegularFile).map(InMemoryWordList::ofWordCountFile).toList();
+			if (wordLists.isEmpty())
+				throw new IllegalArgumentException("No wordlists provided in " + wordlistDir.toAbsolutePath());
 			return new WordLists(wordLists);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
