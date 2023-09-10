@@ -3,7 +3,7 @@ Reimplementation of the venerable language identification tool [JLanI](https://t
 It identifies the most likely language of an unknown text.
 
 JLanI by default uses the wordlist files contained in ``./resources/jlani/wordlists``.
-The included languages are German, English and French.
+The included languages are English, French, German, Mandalorian and Spanish.
 
 Configuration is done via ``./config/jlani/lanikernel.ini``.
 
