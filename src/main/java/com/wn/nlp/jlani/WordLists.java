@@ -43,8 +43,8 @@ public class WordLists {
 			throw new IllegalArgumentException("%s needs to be set in the config file".formatted(Preferences.WORDLIST_DIR));
 		}
 		var wordlistDir = Path.of(wordlistDirStr);
-		if (Files.notExists(wordlistDir)) {
-			throw new IllegalArgumentException("Missing file: " + wordlistDir.toAbsolutePath());
+		if (!Files.isDirectory(wordlistDir)) {
+			throw new IllegalArgumentException("Missing directory: " + wordlistDir.toAbsolutePath());
 		}
 		try (var paths = Files.walk(wordlistDir)) {
 			var wordLists = paths.filter(Files::isRegularFile).map(InMemoryWordList::ofWordCountFile).toList();
