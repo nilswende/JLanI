@@ -88,3 +88,12 @@ class ResourcesExample {
 	}
 }
 ````
+
+## Changes from the original
+
+- Preprocessing:
+  - Splits words on any whitespace of any length
+  - Performs [Unicode normalization](https://docs.oracle.com/javase/tutorial/i18n/text/normalizerapi.html)
+  - Removes numbers
+  - Removes empty strings
+  - Samples from the whole input text instead of sampling the first ``n`` words
